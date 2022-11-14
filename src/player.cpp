@@ -124,7 +124,7 @@ void Pacman::interactionWithMap(Map& map)
                 }
             }
             if (map.tiles[i][j] == 1) {
-                ++_score;
+                _score += 10;
                 map.tiles[i][j] = 0;
             }
         }
