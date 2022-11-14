@@ -13,7 +13,6 @@ int main()
 {
     RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "pacman", Style::Fullscreen);
 
-
     Menu menu;
     menu.drawMenu(window);
 
