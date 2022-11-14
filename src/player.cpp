@@ -19,7 +19,12 @@ Sprite Player::sprite()
 
 Pacman::Pacman(String file, float x, float y)
     : Player(file, x, y), _score(0)
-{};
+{
+    _font.loadFromFile("../fonts/CrackMan.TTF");
+    _text = Text("", _font, 40);
+    _text.setFillColor(Color::Yellow);
+    _text.setStyle(Text::Bold);
+};
    
 void Pacman::checkKeys(Event::KeyEvent& event, Map& map)
 {
@@ -150,4 +155,14 @@ void Pacman::animate(float time)
         _sprite.setTextureRect(IntRect(30, 30 * int(_currentFrame), 30, 30));
         break;
     }
+}
+
+Text Pacman::score()
+{
+    std::ostringstream playerScore;
+    playerScore << _score;
+    _text.setString("SCORE: " + playerScore.str());
+    _text.setPosition(545, 30);
+
+    return _text;
 }

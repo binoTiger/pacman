@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <sstream>
 
 #include "map.h"
 
@@ -36,6 +37,7 @@ public:
 
     void checkKeys(sf::Event::KeyEvent& event, Map& map);
     void update(float time, Map& map);
+    sf::Text score();
 
 private:
     void interactionWithMap(Map& map);
@@ -43,4 +45,6 @@ private:
 
 private:
     int _score;
+    sf::Font _font;
+    sf::Text _text;
 };

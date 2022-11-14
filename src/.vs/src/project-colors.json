@@ -5,6 +5,11 @@
       "ProjectGuid": "6da59023-b5b2-4e6f-8470-c1e29ed5362a",
       "DisplayName": "src",
       "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Прочие файлы",
+      "ColorIndex": -1
     }
   },
   "NextColorIndex": 1

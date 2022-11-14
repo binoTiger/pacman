@@ -13,10 +13,11 @@ int main()
 {
     RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "pacman", Style::Fullscreen);
 
+
     Menu menu;
     menu.drawMenu(window);
 
-    Pacman pacman("pacman.png", 945, 600);
+    Pacman pacman("pacman.png", 945, 780);
 
     Map map;
 
@@ -32,8 +33,7 @@ int main()
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
-                window.close();
-            
+                window.close();            
         }
 
         if (event.type == Event::KeyPressed)
@@ -43,8 +43,12 @@ int main()
         pacman.update(time, map);
 
         window.clear();
+
         map.drawMap(window);
+        
+        window.draw(pacman.score());
         window.draw(pacman.sprite());
+        
         window.display();
     }
 
