@@ -1,0 +1,23 @@
+﻿  main.cpp
+E:\pacman\src\main.cpp(27,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+  map.cpp
+E:\pacman\src\map.cpp(123,52): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+E:\pacman\src\map.cpp(123,43): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  player.cpp
+E:\pacman\src\player.cpp(34,25): warning C4305: =: усечение из "double" в "float"
+E:\pacman\src\player.cpp(43,25): warning C4305: =: усечение из "double" в "float"
+E:\pacman\src\player.cpp(52,25): warning C4305: =: усечение из "double" в "float"
+E:\pacman\src\player.cpp(61,25): warning C4305: =: усечение из "double" в "float"
+E:\pacman\src\player.cpp(98,16): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+E:\pacman\src\player.cpp(100,20): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+E:\pacman\src\player.cpp(106,33): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+E:\pacman\src\player.cpp(110,33): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+E:\pacman\src\player.cpp(114,41): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+E:\pacman\src\player.cpp(118,41): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+E:\pacman\src\player.cpp(134,29): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+  Создание кода
+  94 of 98 functions (95.9%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  src.vcxproj -> E:\pacman\src\x64\Release\pacman.exe

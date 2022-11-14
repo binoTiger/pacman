@@ -1,0 +1,2 @@
+E:\tpro\pacman\src\x64\Release\pacman.exe
+E:\pacman\src\x64\Release\pacman.exe
