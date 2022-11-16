@@ -26,41 +26,33 @@ Pacman::Pacman(String file, float x, float y)
     _text.setStyle(Text::Bold);
 };
    
-void Pacman::checkKeys(Event::KeyEvent& event, Map& map)
+void Pacman::checkKeys(const Event::KeyEvent& event, const Map& map)
 {
     switch (event.code)
     {
     case Keyboard::Right:
-        if ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 1
-            || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 0)
-            && ((int)_y % 30 == 0 || (int)_y % 30 == 1))
+        if (CanGoRight(map))
         {
             _direction = Direction::RIGHT;
             _speed = 0.1;
         }
         break;
     case Keyboard::Left:
-        if ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 1
-            || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 0)
-            && ((int)_y % 30 == 0 || (int)_y % 30 == 1))
+        if (CanGoLeft(map))
         {
             _direction = Direction::LEFT;
             _speed = 0.1;
         }
         break;
     case Keyboard::Down:
-        if ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 1
-            || map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 0)
-            && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1))
+        if (CanGoDown(map))
         {
             _direction = Direction::DOWN;
             _speed = 0.1;
         }
         break;
     case Keyboard::Up:
-        if ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 1
-            || map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 0)
-            && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1))
+        if (CanGoUp(map))
         {
             _direction = Direction::UP;
             _speed = 0.1;
@@ -68,6 +60,7 @@ void Pacman::checkKeys(Event::KeyEvent& event, Map& map)
         break;
     }
 }
+
 void Pacman::update(float time, Map& map)
 {
     switch (_direction)
@@ -96,6 +89,34 @@ void Pacman::update(float time, Map& map)
     _sprite.setPosition(_x, _y);
     interactionWithMap(map);
     animate(time);
+}
+
+bool Pacman::CanGoRight(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 1
+        || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 0)
+        && ((int)_y % 30 == 0 || (int)_y % 30 == 1));
+}
+
+bool Pacman::CanGoLeft(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 1
+        || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 0)
+        && ((int)_y % 30 == 0 || (int)_y % 30 == 1));
+}
+
+bool Pacman::CanGoDown(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 1
+        || map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 0)
+        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1));
+}
+
+bool Pacman::CanGoUp(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 1
+        || map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 0)
+        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1));
 }
 
 void Pacman::interactionWithMap(Map& map)
