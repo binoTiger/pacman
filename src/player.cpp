@@ -60,6 +60,7 @@ void Pacman::checkKeys(const Event::KeyEvent& event, const Map& map)
         break;
     }
 }
+
 void Pacman::update(float time, Map& map)
 {
     switch (_direction)
