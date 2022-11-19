@@ -17,6 +17,7 @@ int main()
     menu.drawMenu(window);
 
     Pacman pacman("pacman.png", 945, 780);
+    Ghost ghost1("ghost.png", 945, 420);
 
     Map map;
 
@@ -40,6 +41,7 @@ int main()
             pacman.checkKeys(event.key, map);
         }
         pacman.update(time, map);
+        ghost1.update(time, pacman, map);
 
         window.clear();
 
@@ -47,6 +49,7 @@ int main()
         
         window.draw(pacman.score());
         window.draw(pacman.sprite());
+        window.draw(ghost1.sprite());
         
         window.display();
     }

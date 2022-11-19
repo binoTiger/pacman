@@ -6,15 +6,45 @@ Player::Player(String file, float x, float y)
     : _x(x), _y(y), _dx(0), _dy(0), _speed(0), _direction(Direction::RIGHT), _file(file), _currentFrame(0)
 {
     _image.loadFromFile("../images/" + file);
+    _image.createMaskFromColor(Color::White);
 
     _texture.loadFromImage(_image);
 
     _sprite.setTexture(_texture);
     _sprite.setTextureRect(IntRect(0, 0, 30, 30));
 }
+
 Sprite Player::sprite()
 {
     return _sprite;
+}
+
+bool Pacman::CanGoRight(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 1
+        || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 0)
+        && ((int)_y % 30 == 0 || (int)_y % 30 == 1));
+}
+
+bool Pacman::CanGoLeft(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 1
+        || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 0)
+        && ((int)_y % 30 == 0 || (int)_y % 30 == 1));
+}
+
+bool Pacman::CanGoDown(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 1
+        || map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 0)
+        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1));
+}
+
+bool Pacman::CanGoUp(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 1
+        || map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 0)
+        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1));
 }
 
 Pacman::Pacman(String file, float x, float y)
@@ -91,34 +121,6 @@ void Pacman::update(float time, Map& map)
     animate(time);
 }
 
-bool Pacman::CanGoRight(const Map& map)
-{
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 1
-        || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 0)
-        && ((int)_y % 30 == 0 || (int)_y % 30 == 1));
-}
-
-bool Pacman::CanGoLeft(const Map& map)
-{
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 1
-        || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 0)
-        && ((int)_y % 30 == 0 || (int)_y % 30 == 1));
-}
-
-bool Pacman::CanGoDown(const Map& map)
-{
-    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 1
-        || map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 0)
-        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1));
-}
-
-bool Pacman::CanGoUp(const Map& map)
-{
-    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 1
-        || map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 0)
-        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1));
-}
-
 void Pacman::interactionWithMap(Map& map)
 {
     for (int i = _y / 30; i < (_y + 28) / 30; i++)
@@ -127,6 +129,7 @@ void Pacman::interactionWithMap(Map& map)
         {
             if ((map.tiles[i][j] != 0) && (map.tiles[i][j] != 1))
             {
+                _speed = 0;
                 if (_dy > 0)
                 {
                     _y = i * 30 - 30;
@@ -186,4 +189,37 @@ Text Pacman::score()
     _text.setPosition(545, 30);
 
     return _text;
+}
+
+const std::pair<float, float> Pacman::coordinates() const
+{
+    return std::make_pair(_x, _y);
+}
+
+bool Ghost::CanGoRight(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 1
+        || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] == 0)
+        && ((int)_y % 30 == 0 || (int)_y % 30 == 1) && _direction != Direction::LEFT);
+}
+
+bool Ghost::CanGoLeft(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 1
+        || map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] == 0)
+        && ((int)_y % 30 == 0 || (int)_y % 30 == 1) && _direction != Direction::RIGHT);
+}
+
+bool Ghost::CanGoDown(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 1
+        || map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 0)
+        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1) && _direction != Direction::UP);
+}
+
+bool Ghost::CanGoUp(const Map& map)
+{
+    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 1
+        || map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 0)
+        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1) && _direction != Direction::DOWN);
 }
