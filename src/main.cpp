@@ -44,7 +44,7 @@ int main()
         }
 
         pacman.update(time, map);
-        ghost1.update(time, pacman.getCoordinates(), map);
+        ghost1.update(time, pacman.getCoordinates(), pacman.isBoosted(), map);
 
         ghostAndPacmanInteraction(pacman, ghost1);
 

@@ -5,7 +5,7 @@ class Ghost : public Player
 {
 public:
     Ghost(sf::String file, float x, float y);
-    void update(float time, const std::pair<float, float> coordinates, Map& map);
+    void update(float time, const std::pair<float, float> coordinates, bool escape, Map& map);
 
 private:
     bool canGoRight(const Map& map);

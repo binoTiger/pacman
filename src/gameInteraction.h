@@ -8,7 +8,7 @@ void ghostAndPacmanInteraction(Pacman& pacman, Ghost& ghost)
 	auto pacmanCoordinates = pacman.getCoordinates();
 	auto ghostCoordinates = ghost.getCoordinates();
 
-	if (Player::distance(pacmanCoordinates.first, pacmanCoordinates.second, ghostCoordinates.first, ghostCoordinates.second) < 10) {
+	if (!pacman.isBoosted() && Player::distance(pacmanCoordinates.first, pacmanCoordinates.second, ghostCoordinates.first, ghostCoordinates.second) < 20) {
 		pacman.setStartCoordinates();
 	}
 }

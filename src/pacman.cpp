@@ -3,7 +3,7 @@
 using namespace sf;
 
 Pacman::Pacman(String file, float x, float y)
-    : Player(file, x, y), _score(0), _lives(3)
+    : Player(file, x, y), _score(0), _lives(3), _isBoosted(false)
 {
     _startCoordinates = std::make_pair(x, y);
     _font.loadFromFile("../fonts/CrackMan.TTF");
@@ -112,6 +112,11 @@ const unsigned Pacman::getLives() const
 void Pacman::reduceLives()
 {
     --_lives;
+}
+
+const bool Pacman::isBoosted() const
+{
+    return _isBoosted;
 }
 
 bool Pacman::CanGoRight(const Map& map)

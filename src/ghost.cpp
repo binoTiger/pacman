@@ -10,7 +10,7 @@ Ghost::Ghost(String file, float x, float y)
     _dx = -_speed;
 }
 
-void Ghost::update(float time, const std::pair<float, float> coordinates, Map& map)
+void Ghost::update(float time, const std::pair<float, float> coordinates, bool escape, Map& map)
 {
     _target = coordinates;
 

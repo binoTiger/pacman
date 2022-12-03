@@ -12,6 +12,7 @@ public:
     sf::Text score();
     const unsigned getLives() const;
     void reduceLives();
+    const bool isBoosted() const;
 
 private:
     bool CanGoRight(const Map& map);
@@ -27,4 +28,5 @@ private:
     sf::Font _font;
     sf::Text _text;
     unsigned _lives;
+    bool _isBoosted;
 };
