@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
 
 #include "map.h"
-#include "player.h"
+#include "pacman.h"
+#include "ghost.h"
 #include "menu.h"
+#include "gameInteraction.h"
 
 using namespace sf;
 
@@ -40,8 +42,11 @@ int main()
         {
             pacman.checkKeys(event.key, map);
         }
+
         pacman.update(time, map);
-        ghost1.update(time, pacman, map);
+        ghost1.update(time, pacman.getCoordinates(), map);
+
+        ghostAndPacmanInteraction(pacman, ghost1);
 
         window.clear();
 

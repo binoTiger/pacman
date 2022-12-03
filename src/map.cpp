@@ -21,6 +21,11 @@ void Map::drawMap(RenderWindow& window)
             case 1:
                 map_sprite.setTextureRect(IntRect(330, 0, 30, 30));
                 break;
+            case 2:
+            case 3:
+            case 4:
+                map_sprite.setTextureRect(IntRect(0, 0, 30, 30));
+                break;
 
             case 11:
                 map_sprite.setTextureRect(IntRect(30, 0, 30, 30));
