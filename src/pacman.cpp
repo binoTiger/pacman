@@ -121,27 +121,25 @@ const bool Pacman::isBoosted() const
 
 bool Pacman::CanGoRight(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] <= 5)
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540)) / 30 + 1] > 100)
         && ((int)_y % 30 <= 1));
 }
 
 bool Pacman::CanGoLeft(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] <= 5)
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540)) / 30 - 1] > 100)
         && ((int)_y % 30 <= 1));
 }
 
 bool Pacman::CanGoDown(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 1
-        || map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 0)
+    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] > 100)
         && ((int)(_x - 540) % 30 <= 1));
 }
 
 bool Pacman::CanGoUp(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 1
-        || map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 0)
+    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] > 100)
         && ((int)(_x - 540) % 30 <= 1));
 }
 
@@ -196,10 +194,6 @@ void Pacman::interactionWithMap(Map& map)
                 {
                     _x = (j * 30) + 540 + 30;
                 }
-            }
-            if (map.tiles[i][j] == 1) {
-                _score += 10;
-                map.tiles[i][j] = 0;
             }
             if (map.tiles[i][j] >= 110000) {
                 _score += 10;

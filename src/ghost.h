@@ -12,9 +12,13 @@ private:
     bool canGoLeft(const Map& map);
     bool canGoDown(const Map& map);
     bool canGoUp(const Map& map);
-    void getDirection(const Map& map);
+    void setDirection(const Map& map);
 
 private:
     std::pair<float, float> _target;
     bool there = false;
+    sf::Clock timer;
+
+    int _lastVisitedX;
+    int _lastVisitedY;
 };

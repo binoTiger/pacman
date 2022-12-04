@@ -14,7 +14,7 @@ void Ghost::update(float time, const std::pair<float, float> coordinates, bool e
 {
     _target = coordinates;
 
-    getDirection(map);
+    setDirection(map);
 
     switch (_direction)
     {
@@ -49,196 +49,52 @@ void Ghost::update(float time, const std::pair<float, float> coordinates, bool e
 
 bool Ghost::canGoRight(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] < 2)
-        && ((int)_y % 30 <= 1) && _direction != Direction::LEFT);
+    return _direction != Direction::LEFT;
 }
 
 bool Ghost::canGoLeft(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] < 2)
-        && ((int)_y % 30 <= 1) && _direction != Direction::RIGHT);
+    return _direction != Direction::RIGHT;
 }
 
 bool Ghost::canGoDown(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] < 2)
-        && ((int)(_x - 540) % 30 <= 1) && _direction != Direction::UP);
+    return _direction != Direction::UP;
 }
 
 bool Ghost::canGoUp(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] < 2)
-        && ((int)(_x - 540) % 30 <= 1) && _direction != Direction::DOWN);
+    return _direction != Direction::DOWN;
 }
 
-void Ghost::getDirection(const Map& map)
+void Ghost::setDirection(const Map& map)
 {
-    if (canGoRight(map) && canGoLeft(map) && !canGoDown(map) && !canGoUp(map)) {
-        if (distance(_x + 30, _y, _target.first, _target.second) <= distance(_x - 30, _y, _target.first, _target.second))
-        {
-            //if (_direction != Direction::LEFT)
-                _direction = Direction::RIGHT;
-        }
-        else if (distance(_x + 30, _y, _target.first, _target.second) > distance(_x - 30, _y, _target.first, _target.second))
-        {
-            //if (_direction != Direction::RIGHT)
-                _direction = Direction::LEFT;
-        }
-    }
-    else if (canGoRight(map) && !canGoLeft(map) && canGoDown(map) && !canGoUp(map)) {
-        if (distance(_x + 30, _y, _target.first, _target.second) <= distance(_x, _y + 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::LEFT)
-                _direction = Direction::RIGHT;
-        }
-        else if (distance(_x + 30, _y, _target.first, _target.second) > distance(_x, _y + 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::UP)
-                _direction = Direction::DOWN;
-        }
-    }
-    else if (canGoRight(map) && !canGoLeft(map) && !canGoDown(map) && canGoUp(map)) {
-        if (distance(_x + 30, _y, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::LEFT)
-                _direction = Direction::RIGHT;
-        }
-        else if (distance(_x + 30, _y, _target.first, _target.second) > distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::DOWN)
-                _direction = Direction::UP;
-        }
-    }
+    unsigned ceil = map.tiles[(int)(_y / 30)][(int)((_x - 540)) / 30];
 
-    else if (!canGoRight(map) && canGoLeft(map) && canGoDown(map) && !canGoUp(map)) {
-        if (distance(_x - 30, _y, _target.first, _target.second) <= distance(_x, _y + 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::RIGHT)
-                _direction = Direction::LEFT;
-        }
-        else if (distance(_x - 30, _y, _target.first, _target.second) > distance(_x, _y + 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::UP)
-                _direction = Direction::DOWN;
-        }
-    }
-    else if (!canGoRight(map) && canGoLeft(map) && !canGoDown(map) && canGoUp(map)) {
-        if (distance(_x - 30, _y, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::RIGHT)
-                _direction = Direction::LEFT;
-        }
-        else if (distance(_x - 30, _y, _target.first, _target.second) > distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::DOWN)
-                _direction = Direction::UP;
-        }
-    }
+    bool goRight = (ceil % 10) && canGoRight(map);
+    bool goLeft = ((ceil / 10) % 10) && canGoLeft(map);
+    bool goDown = ((ceil / 100) % 10) && canGoDown(map);
+    bool goUp = ((ceil / 1000) % 10) && canGoUp(map);
 
-    else if (!canGoRight(map) && !canGoLeft(map) && canGoDown(map) && canGoUp(map)) {
-        if (distance(_x, _y + 30, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::UP)
-                _direction = Direction::DOWN;
-        }
-        else if (distance(_x - 30, _y, _target.first, _target.second) > distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::DOWN)
-                _direction = Direction::UP;
-        }
-    }
+    std::map<float, Direction> distances;
 
-    else if (canGoRight(map) && canGoLeft(map) && canGoDown(map) && !canGoUp(map)) {
-        if (distance(_x + 30, _y, _target.first, _target.second) <= distance(_x - 30, _y, _target.first, _target.second) &&
-            distance(_x + 30, _y, _target.first, _target.second) <= distance(_x, _y + 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::RIGHT)
-                _direction = Direction::RIGHT;
+    if (((int)_y % 30 == 0) && ((int)(_x - 540) % 30 == 0)) {
+        if (goUp == 1 && canGoUp(map)) {
+            float distanceIfGoUp = distance(_x, _y - 30, _target.first, _target.second);
+            distances.insert(std::pair<float, Direction>(distanceIfGoUp, Direction::UP));
         }
-        if (distance(_x - 30, _y, _target.first, _target.second) <= distance(_x + 30, _y, _target.first, _target.second) &&
-            distance(_x - 30, _y, _target.first, _target.second) <= distance(_x, _y + 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::LEFT)
-                _direction = Direction::LEFT;
+        if (goLeft == 1 && canGoLeft(map)) {
+            float distanceIfGoLeft = distance(_x - 30, _y, _target.first, _target.second);
+            distances.insert(std::pair<float, Direction>(distanceIfGoLeft, Direction::LEFT));
         }
-        if (distance(_x, _y + 30, _target.first, _target.second) <= distance(_x + 30, _y, _target.first, _target.second) &&
-            distance(_x, _y + 30, _target.first, _target.second) <= distance(_x - 30, _y, _target.first, _target.second))
-        {
-            //if (_direction != Direction::DOWN)
-                _direction = Direction::DOWN;
+        if (goDown == 1 && canGoDown(map)) {
+            float distanceIfGoDown = distance(_x, _y + 30, _target.first, _target.second);
+            distances.insert(std::pair<float, Direction>(distanceIfGoDown, Direction::DOWN));
         }
-    }
-    else if (canGoRight(map) && canGoLeft(map) && !canGoDown(map) && canGoUp(map)) {
-        if (distance(_x + 30, _y, _target.first, _target.second) <= distance(_x - 30, _y, _target.first, _target.second) &&
-            distance(_x + 30, _y, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::RIGHT)
-                _direction = Direction::RIGHT;
+        if (goRight == 1 && canGoRight(map)) {
+            float distanceIfGoRight = distance(_x + 30, _y, _target.first, _target.second);
+            distances.insert(std::pair<float, Direction>(distanceIfGoRight, Direction::RIGHT));
         }
-        if (distance(_x - 30, _y, _target.first, _target.second) <= distance(_x + 30, _y, _target.first, _target.second) &&
-            distance(_x - 30, _y, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::LEFT)
-                _direction = Direction::LEFT;
-        }
-        if (distance(_x, _y - 30, _target.first, _target.second) <= distance(_x + 30, _y, _target.first, _target.second) &&
-            distance(_x, _y - 30, _target.first, _target.second) <= distance(_x - 30, _y, _target.first, _target.second))
-        {
-            //if (_direction != Direction::UP)
-                _direction = Direction::UP;
-        }
-    }
-    else if (canGoRight(map) && !canGoLeft(map) && canGoDown(map) && canGoUp(map)) {
-        if (distance(_x + 30, _y, _target.first, _target.second) <= distance(_x, _y + 30, _target.first, _target.second) &&
-            distance(_x + 30, _y, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::RIGHT)
-                _direction = Direction::RIGHT;
-        }
-        if (distance(_x, _y + 30, _target.first, _target.second) <= distance(_x + 30, _y, _target.first, _target.second) &&
-            distance(_x, _y + 30, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::DOWN)
-                _direction = Direction::DOWN;
-        }
-        if (distance(_x, _y - 30, _target.first, _target.second) <= distance(_x + 30, _y, _target.first, _target.second) &&
-            distance(_x, _y - 30, _target.first, _target.second) <= distance(_x, _y + 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::UP)
-                _direction = Direction::UP;
-        }
-    }
-    else if (!canGoRight(map) && canGoLeft(map) && canGoDown(map) && canGoUp(map)) {
-        if (distance(_x - 30, _y, _target.first, _target.second) <= distance(_x, _y + 30, _target.first, _target.second) &&
-            distance(_x - 30, _y, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::LEFT)
-                _direction = Direction::LEFT;
-        }
-        if (distance(_x, _y + 30, _target.first, _target.second) <= distance(_x - 30, _y, _target.first, _target.second) &&
-            distance(_x, _y + 30, _target.first, _target.second) <= distance(_x, _y - 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::DOWN)
-                _direction = Direction::DOWN;
-        }
-        if (distance(_x, _y - 30, _target.first, _target.second) <= distance(_x - 30, _y, _target.first, _target.second) &&
-            distance(_x, _y - 30, _target.first, _target.second) <= distance(_x, _y + 30, _target.first, _target.second))
-        {
-            //if (_direction != Direction::UP)
-                _direction = Direction::UP;
-        }
-    }
-
-    else if (canGoRight(map) && !canGoLeft(map) && !canGoDown(map) && !canGoUp(map)) {
-        _direction = Direction::RIGHT;
-    }
-    else if (!canGoRight(map) && canGoLeft(map) && !canGoDown(map) && !canGoUp(map)) {
-        _direction = Direction::LEFT;
-    }
-    else if (!canGoRight(map) && !canGoLeft(map) && canGoDown(map) && !canGoUp(map)) {
-        _direction = Direction::DOWN;
-    }
-    else if (!canGoRight(map) && !canGoLeft(map) && !canGoDown(map) && canGoUp(map)) {
-        _direction = Direction::UP;
+        _direction = (*distances.begin()).second;
     }
 }
