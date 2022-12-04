@@ -121,28 +121,28 @@ const bool Pacman::isBoosted() const
 
 bool Pacman::CanGoRight(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] < 5)
-        && ((int)_y % 30 == 0 || (int)_y % 30 == 1));
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) + 1] <= 5)
+        && ((int)_y % 30 <= 1));
 }
 
 bool Pacman::CanGoLeft(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] < 5)
-        && ((int)_y % 30 == 0 || (int)_y % 30 == 1));
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540) / 30) - 1] <= 5)
+        && ((int)_y % 30 <= 1));
 }
 
 bool Pacman::CanGoDown(const Map& map)
 {
     return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 1
         || map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] == 0)
-        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1));
+        && ((int)(_x - 540) % 30 <= 1));
 }
 
 bool Pacman::CanGoUp(const Map& map)
 {
     return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 1
         || map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] == 0)
-        && ((int)(_x - 540) % 30 == 0 || (int)(_x - 540) % 30 == 1));
+        && ((int)(_x - 540) % 30 <= 1));
 }
 
 void Pacman::animate(float time)
@@ -177,7 +177,7 @@ void Pacman::interactionWithMap(Map& map)
     {
         for (int j = (_x - 540) / 30; j < (_x + 28 - 540) / 30; j++)
         {
-            if (map.tiles[i][j] > 10)
+            if (map.tiles[i][j] > 10 && map.tiles[i][j] < 100)
             {
                 _speed = 0;
                 if (_dy > 0)
@@ -200,6 +200,10 @@ void Pacman::interactionWithMap(Map& map)
             if (map.tiles[i][j] == 1) {
                 _score += 10;
                 map.tiles[i][j] = 0;
+            }
+            if (map.tiles[i][j] >= 110000) {
+                _score += 10;
+                map.tiles[i][j] -= 10000;
             }
         }
     }
