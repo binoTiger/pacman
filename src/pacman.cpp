@@ -3,13 +3,17 @@
 using namespace sf;
 
 Pacman::Pacman(String file, float x, float y)
-    : Player(file, x, y), _score(0), _lives(3), _isBoosted(false)
+    : Player(file, x, y), _score(0), _lives(3), _isImmortal(false), _isBoosted(false)
 {
-    _startCoordinates = std::make_pair(x, y);
     _font.loadFromFile("../fonts/CrackMan.TTF");
     _text = Text("", _font, 40);
     _text.setFillColor(Color::Yellow);
     _text.setStyle(Text::Bold);
+
+    _lifesImage.loadFromFile("../images/PacmanLogo.png");
+    _lifesImage.createMaskFromColor(Color::Green);
+    _lifesTexture.loadFromImage(_lifesImage);
+    _spriteOfLifes.setTexture(_lifesTexture);
 };
 
 void Pacman::checkKeys(const Event::KeyEvent& event, const Map& map)
@@ -52,25 +56,21 @@ void Pacman::update(float time, Map& map)
     switch (_direction)
     {
     case Direction::RIGHT:
-        _dx = _speed;
-        _dy = 0;
+        _acceleration = Vector2f(_speed, 0);
         break;
     case Direction::LEFT:
-        _dx = -_speed;
-        _dy = 0;
+        _acceleration = Vector2f(-_speed, 0);
         break;
     case Direction::DOWN:
-        _dx = 0;
-        _dy = _speed;
+        _acceleration = Vector2f(0, _speed);
         break;
     case Direction::UP:
-        _dx = 0;
-        _dy = -_speed;
+        _acceleration = Vector2f(0, -_speed);
         break;
     }
 
-    _x += _dx * time;
-    _y += _dy * time;
+    _x += _acceleration.x * time;
+    _y += _acceleration.y * time;
 
     if (distance(_x, 540) < 5 && distance(_y, 510) < 5) {
         _x = 1340;
@@ -81,6 +81,22 @@ void Pacman::update(float time, Map& map)
         _y = 510;
     }
 
+    if (_isImmortal) {
+        _immortalTimer += time;
+        if (_immortalTimer > 500) {
+            _isImmortal = false;
+            _immortalTimer = 0;
+        }
+    }
+
+    if (_isBoosted) {
+        _boostedTimer += time;
+        if (_boostedTimer > 1000) {
+            _isBoosted = false;
+            _boostedTimer = 0;
+        }
+    }
+
     interactionWithMap(map);
     _sprite.setPosition(_x, _y);
     animate(time);
@@ -88,10 +104,10 @@ void Pacman::update(float time, Map& map)
 
 void Pacman::setStartCoordinates()
 {
-    _x = _startCoordinates.first;
-    _y = _startCoordinates.second;
+    _x = _startCoordinates.x;
+    _y = _startCoordinates.y;
     _direction = Direction::RIGHT;
-    _speed = 0.1;
+    _isImmortal = true;
 }
 
 Text Pacman::score()
@@ -104,14 +120,27 @@ Text Pacman::score()
     return _text;
 }
 
-const unsigned Pacman::getLives() const
+const unsigned Pacman::getLifes() const
 {
     return _lives;
 }
 
-void Pacman::reduceLives()
+void Pacman::reduceLifes()
 {
     --_lives;
+}
+
+Sprite Pacman::lifes()
+{
+    _spriteOfLifes.setTextureRect(IntRect(0, 0, 40 + (_lives - 1) * 55, 40));
+    _spriteOfLifes.setPosition(545, 1030);
+
+    return _spriteOfLifes;
+}
+
+const bool Pacman::isImmortal() const
+{
+    return _isImmortal;
 }
 
 const bool Pacman::isBoosted() const
@@ -145,12 +174,20 @@ bool Pacman::CanGoUp(const Map& map)
 
 void Pacman::animate(float time)
 {
-    if (_dx == 0 && _dy == 0)
+    if (_acceleration == Vector2f(0, 0))
         return;
 
-    _currentFrame += 0.0035 * time;
-    if (_currentFrame > 2)
+    if (!_isImmortal) {
+        _currentFrame += 0.0035 * time;
+    }
+    else {
+        _currentFrame += 0.007 * time;
+    }
+
+    if (!_isImmortal && _currentFrame > 2)
         _currentFrame -= 2;
+    if (_isImmortal && _currentFrame > 3)
+        _currentFrame -= 3;
 
     switch (_direction)
     {
@@ -161,7 +198,7 @@ void Pacman::animate(float time)
         _sprite.setTextureRect(IntRect(29, 30 * int(_currentFrame), -29, 30));
         break;
     case Direction::DOWN:
-        _sprite.setTextureRect(IntRect(30, 29 + 30 * int(_currentFrame), 30, -30));
+        _sprite.setTextureRect(IntRect(30, 29 + 30 * int(_currentFrame), 30, -29));
         break;
     case Direction::UP:
         _sprite.setTextureRect(IntRect(30, 30 * int(_currentFrame), 30, 30));
@@ -178,24 +215,29 @@ void Pacman::interactionWithMap(Map& map)
             if (map.tiles[i][j] > 10 && map.tiles[i][j] < 100)
             {
                 _speed = 0;
-                if (_dy > 0)
+                if (_acceleration.y > 0)
                 {
                     _y = i * 30 - 30;
                 }
-                if (_dy < 0)
+                if (_acceleration.y < 0)
                 {
                     _y = i * 30 + 30;
                 }
-                if (_dx > 0)
+                if (_acceleration.x > 0)
                 {
                     _x = (j * 30) + 540 - 30;
                 }
-                if (_dx < 0)
+                if (_acceleration.x < 0)
                 {
                     _x = (j * 30) + 540 + 30;
                 }
             }
-            if (map.tiles[i][j] >= 110000) {
+            if (map.tiles[i][j] >= 120000) {
+                _score += 100;
+                map.tiles[i][j] -= 20000;
+                _isBoosted = true;
+            }
+            else if (map.tiles[i][j] >= 110000) {
                 _score += 10;
                 map.tiles[i][j] -= 10000;
             }

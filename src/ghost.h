@@ -5,7 +5,8 @@ class Ghost : public Player
 {
 public:
     Ghost(sf::String file, float x, float y);
-    void update(float time, const std::pair<float, float> coordinates, bool escape, Map& map);
+    void update(float time, const sf::Vector2f coordinates, bool isFrightened, Map& map);
+    void setStartCoordinates();
 
 private:
     bool canGoRight(const Map& map);
@@ -15,10 +16,9 @@ private:
     void setDirection(const Map& map);
 
 private:
-    std::pair<float, float> _target;
+    sf::Vector2f _target;
     bool there = false;
-    sf::Clock timer;
-
     int _lastVisitedX;
     int _lastVisitedY;
+    bool _isFrightened;
 };

@@ -17,13 +17,16 @@ class Player
 public:
     Player(sf::String file, float x, float y);
     sf::Sprite sprite();
-    const std::pair<float, float> getCoordinates() const;
+    const sf::Vector2f getCoordinates() const;
     static float distance(float x1, float y1, float x2, float y2);
     static float distance(float coordinate1, float coordinate2);
+    static float distance(sf::Vector2f coordinates1, sf::Vector2f coordinates2);
+    static float distance(float x1, float y1, sf::Vector2f coordinates2);
 
 protected:
     float _x, _y;
-    float _dx, _dy;
+    sf::Vector2f _startCoordinates;
+    sf::Vector2f _acceleration;
     float _speed;
     Direction _direction;
     sf::String _file;
@@ -32,9 +35,3 @@ protected:
     sf::Sprite _sprite;
     float _currentFrame;
 };
-
-//class Pacman : public Player
-//{};
-//
-//class Ghost : public Player
-//{};

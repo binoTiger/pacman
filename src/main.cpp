@@ -48,11 +48,17 @@ int main()
 
         ghostAndPacmanInteraction(pacman, ghost1);
 
+        if (pacman.getLifes() == 0)
+        {
+            window.close();
+        }
+
         window.clear();
 
         map.drawMap(window);
         
         window.draw(pacman.score());
+        window.draw(pacman.lifes());
         window.draw(pacman.sprite());
         window.draw(ghost1.sprite());
         

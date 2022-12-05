@@ -5,6 +5,7 @@ using namespace sf;
 Map::Map()
 {
     map_image.loadFromFile("../images/map.png");
+    map_image.createMaskFromColor(Color::White);
     map_texture.loadFromImage(map_image);
     map_sprite.setTexture(map_texture);
 }
@@ -16,7 +17,6 @@ void Map::drawMap(RenderWindow& window)
             switch (tiles[i][j])
             {
             case 0:
-            case 5:
             case 100000:
             case 100001:
             case 100010:
@@ -54,6 +54,10 @@ void Map::drawMap(RenderWindow& window)
             case 111110:
             case 111111:
                 map_sprite.setTextureRect(IntRect(330, 0, 30, 30));
+                break;
+
+            case 121001:
+                map_sprite.setTextureRect(IntRect(330, 30, 30, 30));
                 break;
 
             case 11:
