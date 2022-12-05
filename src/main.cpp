@@ -18,8 +18,10 @@ int main()
     Menu menu;
     menu.drawMenu(window);
 
+    /*Pacman pacman("pacman.png", 945, 780);
+    Ghost ghost1("ghost.png", 945, 420, 0.095);*/
     Pacman pacman("pacman.png", 945, 780);
-    Ghost ghost1("ghost.png", 945, 420);
+    Ghost ghost1(945, 420, 0.095);
 
     Map map;
 
@@ -44,7 +46,7 @@ int main()
         }
 
         pacman.update(time, map);
-        ghost1.update(time, pacman.getCoordinates(), pacman.isBoosted(), map);
+        ghost1.update(time, pacman.getCoordinates(), pacman.getDirection(), pacman.isBoosted(), map);
 
         ghostAndPacmanInteraction(pacman, ghost1);
 

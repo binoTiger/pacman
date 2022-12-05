@@ -2,20 +2,28 @@
 
 using namespace sf;
 
-Ghost::Ghost(String file, float x, float y)
-    : Player(file, x, y), _isFrightened(false)
+unsigned Ghost::_count = 3;
+std::vector<Vector2f> Ghost::_frightenedTargets = {Vector2f(23 * 30 + 540, 4 * 30), Vector2f(4 * 30 + 540, 4 * 30), Vector2f(25 * 30 + 540, 32 * 30), Vector2f(1 * 30 + 540, 29 * 30)};
+
+Ghost::Ghost(float x, float y, float speed)
+    : Player(String("ghost") + String(std::to_string(_count)) + String(".png"), x, y, speed), _isFrightened(true)
 {
+    _id = _count++;
+    _frighetenedTarget = _frightenedTargets[_id];
+
     _direction = Direction::LEFT;
-    _speed = 0.095;
+    _speed = speed;
     _acceleration = Vector2f(-_speed, 0);
 
     _lastVisitedX = (int)((_x - 540)) / 30;
     _lastVisitedY = (int)(_y / 30);
 }
 
-void Ghost::update(float time, const Vector2f coordinates, bool escape, Map& map)
+void Ghost::update(float time, const Vector2f pacmanCoordinates, Direction pacmanDirection, bool isFrightened, Map& map)
 {
-    _target = coordinates;
+    _isFrightened = isFrightened;
+
+    _target = getTarget(pacmanCoordinates, pacmanDirection);
 
     setDirection(map);
 
@@ -38,12 +46,8 @@ void Ghost::update(float time, const Vector2f coordinates, bool escape, Map& map
     _x += _acceleration.x * time;
     _y += _acceleration.y * time;
 
-    _currentFrame += 0.0035 * time;
-    if (_currentFrame > 2)
-        _currentFrame -= 2;
-    _sprite.setTextureRect(sf::IntRect(30 * int(_currentFrame), 0, 30, 30));
-
     _sprite.setPosition(_x, _y);
+    animate(time);
 }
 
 void Ghost::setStartCoordinates()
@@ -105,5 +109,65 @@ void Ghost::setDirection(const Map& map)
         _direction = (*distances.begin()).second;
         _lastVisitedX = (int)((_x - 540)) / 30;
         _lastVisitedY = (int)(_y / 30);
+    }
+}
+
+void Ghost::animate(float time)
+{
+    if (!_isFrightened) {
+        _currentFrame += 0.0035 * time;
+        if (_currentFrame > 2)
+            _currentFrame = 0;
+        _sprite.setTextureRect(sf::IntRect(30 * int(_currentFrame), 0, 30, 30));
+    }
+    else {
+        _currentFrame += 0.0055 * time;
+        if (_currentFrame > 4)
+            _currentFrame = 0;
+        _sprite.setTextureRect(sf::IntRect(30 * int(_currentFrame), 30, 30, 30));
+    }
+}
+
+Vector2f Ghost::getTarget(Vector2f pacmanCoordinates, Direction pacmanDirection)
+{
+    if (_isFrightened) {
+        return _frighetenedTarget;
+    }
+
+    switch (_id)
+    {
+    case 0:
+        return pacmanCoordinates;
+    case 1:
+        switch (pacmanDirection)
+        {
+        case Direction::RIGHT:
+            return pacmanCoordinates + Vector2f(120, 0);
+        case Direction::LEFT:
+            return pacmanCoordinates + Vector2f(-120, 0);
+        case Direction::DOWN:
+            return pacmanCoordinates + Vector2f(0, 120);
+        case Direction::UP:
+            return pacmanCoordinates + Vector2f(0, -120);
+        }
+    case 2:
+        switch (pacmanDirection)
+        {
+        case Direction::RIGHT:
+            return pacmanCoordinates + Vector2f(60, 0);
+        case Direction::LEFT:
+            return pacmanCoordinates + Vector2f(-60, 0);
+        case Direction::DOWN:
+            return pacmanCoordinates + Vector2f(0, 60);
+        case Direction::UP:
+            return pacmanCoordinates + Vector2f(0, -60);
+        }
+    case 3:
+        if (distance(_x, _y, pacmanCoordinates) > 350) {
+            return pacmanCoordinates;
+        }
+        else {
+            return _frighetenedTarget;
+        }
     }
 }

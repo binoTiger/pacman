@@ -3,7 +3,7 @@
 using namespace sf;
 
 Pacman::Pacman(String file, float x, float y)
-    : Player(file, x, y), _score(0), _lives(3), _isImmortal(false), _isBoosted(false)
+    : Player(file, x, y, 0), _score(0), _lives(3), _isImmortal(false), _isBoosted(false)
 {
     _font.loadFromFile("../fonts/CrackMan.TTF");
     _text = Text("", _font, 40);
@@ -83,7 +83,7 @@ void Pacman::update(float time, Map& map)
 
     if (_isImmortal) {
         _immortalTimer += time;
-        if (_immortalTimer > 500) {
+        if (_immortalTimer > 700) {
             _isImmortal = false;
             _immortalTimer = 0;
         }
@@ -91,7 +91,7 @@ void Pacman::update(float time, Map& map)
 
     if (_isBoosted) {
         _boostedTimer += time;
-        if (_boostedTimer > 1000) {
+        if (_boostedTimer > 1600) {
             _isBoosted = false;
             _boostedTimer = 0;
         }
@@ -148,6 +148,16 @@ const bool Pacman::isBoosted() const
     return _isBoosted;
 }
 
+void Pacman::increaseScoreIfEatGhost()
+{
+    _score += 200;
+}
+
+const Direction Pacman::getDirection() const
+{
+    return _direction;
+}
+
 bool Pacman::CanGoRight(const Map& map)
 {
     return ((map.tiles[(int)(_y / 30)][(int)((_x - 540)) / 30 + 1] > 100)
@@ -179,15 +189,16 @@ void Pacman::animate(float time)
 
     if (!_isImmortal) {
         _currentFrame += 0.0035 * time;
+        if (_currentFrame > 2) {
+            _currentFrame = 0;
+        }
     }
     else {
         _currentFrame += 0.007 * time;
+        if (_currentFrame > 3) {
+            _currentFrame = 0;
+        }
     }
-
-    if (!_isImmortal && _currentFrame > 2)
-        _currentFrame -= 2;
-    if (_isImmortal && _currentFrame > 3)
-        _currentFrame -= 3;
 
     switch (_direction)
     {

@@ -15,6 +15,8 @@ public:
     sf::Sprite lifes();
     const bool isImmortal() const;
     const bool isBoosted() const;
+    void increaseScoreIfEatGhost();
+    const Direction getDirection() const;
 
 private:
     bool CanGoRight(const Map& map);

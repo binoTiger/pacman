@@ -14,5 +14,6 @@ void ghostAndPacmanInteraction(Pacman& pacman, Ghost& ghost)
 	}
 	else if (pacman.isBoosted() && Player::distance(pacmanCoordinates, ghostCoordinates) < 20) {
 		ghost.setStartCoordinates();
+		pacman.increaseScoreIfEatGhost();
 	}
 }

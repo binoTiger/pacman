@@ -57,6 +57,8 @@ void Map::drawMap(RenderWindow& window)
                 break;
 
             case 121001:
+            case 121010:
+            case 121100:
                 map_sprite.setTextureRect(IntRect(330, 30, 30, 30));
                 break;
 

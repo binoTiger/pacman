@@ -15,7 +15,7 @@ enum class Direction
 class Player
 {
 public:
-    Player(sf::String file, float x, float y);
+    Player(sf::String file, float x, float y, float speed);
     sf::Sprite sprite();
     const sf::Vector2f getCoordinates() const;
     static float distance(float x1, float y1, float x2, float y2);
