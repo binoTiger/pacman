@@ -3,7 +3,7 @@
 using namespace sf;
 
 Pacman::Pacman(String file, float x, float y)
-    : Player(file, x, y, 0), _score(0), _lives(3), _isImmortal(false), _isBoosted(false)
+    : Player(file, x, y, 0), _score(0), _lives(3), _isImmortal(false), _immortalTimer(0), _isBoosted(false), _boostedTimer(0)
 {
     _font.loadFromFile("../fonts/CrackMan.TTF");
     _text = Text("", _font, 40);
@@ -81,9 +81,10 @@ void Pacman::update(float time, Map& map)
         _y = 510;
     }
 
+    // 1 sec ~ 300
     if (_isImmortal) {
         _immortalTimer += time;
-        if (_immortalTimer > 700) {
+        if (_immortalTimer > 2500) {
             _isImmortal = false;
             _immortalTimer = 0;
         }
@@ -91,11 +92,13 @@ void Pacman::update(float time, Map& map)
 
     if (_isBoosted) {
         _boostedTimer += time;
-        if (_boostedTimer > 1600) {
+        if (_boostedTimer > 5000) {
             _isBoosted = false;
             _boostedTimer = 0;
         }
     }
+
+    std::cout << _immortalTimer << _boostedTimer << "\n";
 
     interactionWithMap(map);
     _sprite.setPosition(_x, _y);
@@ -108,6 +111,8 @@ void Pacman::setStartCoordinates()
     _y = _startCoordinates.y;
     _direction = Direction::RIGHT;
     _isImmortal = true;
+    _acceleration = Vector2f(0, 0);
+    _speed = 0;
 }
 
 Text Pacman::score()
@@ -184,12 +189,13 @@ bool Pacman::CanGoUp(const Map& map)
 
 void Pacman::animate(float time)
 {
-    if (_acceleration == Vector2f(0, 0))
-        return;
+    if (_acceleration == Vector2f(0, 0)) {
+        _currentFrame = 0;
+    }
 
     if (!_isImmortal) {
         _currentFrame += 0.0035 * time;
-        if (_currentFrame > 2) {
+        if (_currentFrame >= 2) {
             _currentFrame = 0;
         }
     }

@@ -2,8 +2,8 @@
 
 using namespace sf;
 
-unsigned Ghost::_count = 3;
-std::vector<Vector2f> Ghost::_frightenedTargets = {Vector2f(23 * 30 + 540, 4 * 30), Vector2f(4 * 30 + 540, 4 * 30), Vector2f(25 * 30 + 540, 32 * 30), Vector2f(1 * 30 + 540, 29 * 30)};
+unsigned Ghost::_count = 0;
+std::vector<Vector2f> Ghost::_frightenedTargets = { Vector2f(23 * 30 + 540, 4 * 30), Vector2f(4 * 30 + 540, 4 * 30), Vector2f(25 * 30 + 540, 32 * 30), Vector2f(1 * 30 + 540, 29 * 30) };
 
 Ghost::Ghost(float x, float y, float speed)
     : Player(String("ghost") + String(std::to_string(_count)) + String(".png"), x, y, speed), _isFrightened(true)

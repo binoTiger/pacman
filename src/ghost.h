@@ -8,6 +8,8 @@ public:
     void update(float time, const sf::Vector2f coordinates, Direction pacmanDirection, bool isFrightened, Map& map);
     void setStartCoordinates();
 
+    static unsigned _count;
+
 private:
     bool canGoRight(const Map& map);
     bool canGoLeft(const Map& map);
@@ -18,7 +20,7 @@ private:
     sf::Vector2f getTarget(sf::Vector2f pacmanCoordinates, Direction pacmanDirection);
 
 private:
-    static unsigned _count;
+    //static unsigned _count;
     static std::vector<sf::Vector2f> _frightenedTargets;
 
     unsigned _id;

@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <sstream>
+#include <iostream>
 
 #include "map.h"
 
