@@ -18,14 +18,13 @@ int main()
     Menu menu;
     menu.drawMenu(window);
 
-    /*Pacman pacman("pacman.png", 945, 780);
-    Ghost ghost1("ghost.png", 945, 420, 0.095);*/
     Pacman pacman("pacman.png", 945, 780);
-    //Ghost ghost1(945, 420, 0.095);
 
-    //Ghost ghost1(945, 420, 0.095);
     std::vector<Ghost*> ghostsVector;
-    ghostsVector.push_back(new Ghost(945, 420, 0.095));
+    ghostsVector.push_back(new Ghost(13 * 30 + 540 + 15, 14 * 30, 0.095, true));
+    ghostsVector.push_back(new Ghost(13 * 30 + 540 + 15, 17 * 30, 0.095, false));
+    ghostsVector.push_back(new Ghost(11 * 30 + 540 + 15, 17 * 30, 0.095, false));
+    ghostsVector.push_back(new Ghost(15 * 30 + 540 + 15, 17 * 30, 0.095, false));
 
     Map map;
 
@@ -35,13 +34,23 @@ int main()
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
-        ghostsSpawnTimer += time;
+        if (!ghostsVector[1]->isStart()) {
+            ghostsSpawnTimer += time;
+        }
         clock.restart();
         time /= 800;
 
-        if (ghostsSpawnTimer > 5000000 && Ghost::_count < 4) {
-            ghostsVector.push_back(new Ghost(945, 420, 0.095));
+        if (ghostsSpawnTimer > 2000000 && !ghostsVector[1]->isStart()) {
+            ghostsVector[1]->start();
             ghostsSpawnTimer = 0;
+        }
+
+        if (!ghostsVector[2]->isStart() && pacman.pointsEaten() > 30) {
+            ghostsVector[2]->start();
+        }
+
+        if (!ghostsVector[3]->isStart() && pacman.pointsEaten() > 80) {
+            ghostsVector[3]->start();
         }
 
         Event event;
@@ -57,7 +66,6 @@ int main()
         }
 
         pacman.update(time, map);
-        //ghost1.update(time, pacman.getCoordinates(), pacman.getDirection(), pacman.isBoosted(), map);
 
         for (auto& ghost : ghostsVector) {
             (*ghost).update(time, pacman.getCoordinates(), pacman.getDirection(), pacman.isBoosted(), map);
@@ -66,8 +74,6 @@ int main()
         for (auto& ghost : ghostsVector) {
             ghostAndPacmanInteraction(pacman, (*ghost));
         }
-
-        //ghostAndPacmanInteraction(pacman, ghost1);
 
         if (pacman.getLifes() == 0)
         {
@@ -81,7 +87,6 @@ int main()
         window.draw(pacman.score());
         window.draw(pacman.lifes());
         window.draw(pacman.sprite());
-        //window.draw(ghost1.sprite());
 
         for (auto& ghost : ghostsVector) {
             window.draw((*ghost).sprite());

@@ -74,10 +74,10 @@ void Map::drawMap(RenderWindow& window)
             case 14:
                 map_sprite.setTextureRect(IntRect(60, 29, 30, -30));
                 break;
-            case 15:
+            case 11000:
                 map_sprite.setTextureRect(IntRect(360, 0, 30, 30));
                 break;
-            case 16:
+            case 21000:
                 map_sprite.setTextureRect(IntRect(390, 0, -30, 30));
                 break;
 

@@ -4,9 +4,11 @@
 class Ghost : public Player
 {
 public:
-    Ghost(float x, float y, float speed);
+    Ghost(float x, float y, float speed, bool canStart);
     void update(float time, const sf::Vector2f coordinates, Direction pacmanDirection, bool isFrightened, Map& map);
     void setStartCoordinates();
+    bool isStart();
+    void start();
 
     static unsigned _count;
 
@@ -20,7 +22,6 @@ private:
     sf::Vector2f getTarget(sf::Vector2f pacmanCoordinates, Direction pacmanDirection);
 
 private:
-    //static unsigned _count;
     static std::vector<sf::Vector2f> _frightenedTargets;
 
     unsigned _id;
@@ -29,4 +30,5 @@ private:
     bool _isFrightened;
     int _lastVisitedX;
     int _lastVisitedY;
+    bool _isStart;
 };

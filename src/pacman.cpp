@@ -125,6 +125,11 @@ Text Pacman::score()
     return _text;
 }
 
+unsigned Pacman::pointsEaten()
+{
+    return _pointsEaten;
+}
+
 const unsigned Pacman::getLifes() const
 {
     return _lives;
@@ -165,25 +170,25 @@ const Direction Pacman::getDirection() const
 
 bool Pacman::CanGoRight(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540)) / 30 + 1] > 100)
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540)) / 30 + 1] >= 100000)
         && ((int)_y % 30 <= 1));
 }
 
 bool Pacman::CanGoLeft(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540)) / 30 - 1] > 100)
+    return ((map.tiles[(int)(_y / 30)][(int)((_x - 540)) / 30 - 1] >= 100000)
         && ((int)_y % 30 <= 1));
 }
 
 bool Pacman::CanGoDown(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] > 100)
+    return ((map.tiles[(int)(_y / 30) + 1][(int)((_x - 540)) / 30] >= 100000)
         && ((int)(_x - 540) % 30 <= 1));
 }
 
 bool Pacman::CanGoUp(const Map& map)
 {
-    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] > 100)
+    return ((map.tiles[(int)(_y / 30) - 1][(int)((_x - 540)) / 30] >= 100000)
         && ((int)(_x - 540) % 30 <= 1));
 }
 
@@ -257,6 +262,7 @@ void Pacman::interactionWithMap(Map& map)
             else if (map.tiles[i][j] >= 110000) {
                 _score += 10;
                 map.tiles[i][j] -= 10000;
+                ++_pointsEaten;
             }
         }
     }

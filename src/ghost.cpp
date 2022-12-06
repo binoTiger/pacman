@@ -5,11 +5,12 @@ using namespace sf;
 unsigned Ghost::_count = 0;
 std::vector<Vector2f> Ghost::_frightenedTargets = { Vector2f(23 * 30 + 540, 4 * 30), Vector2f(4 * 30 + 540, 4 * 30), Vector2f(25 * 30 + 540, 32 * 30), Vector2f(1 * 30 + 540, 29 * 30) };
 
-Ghost::Ghost(float x, float y, float speed)
-    : Player(String("ghost") + String(std::to_string(_count)) + String(".png"), x, y, speed), _isFrightened(true)
+Ghost::Ghost(float x, float y, float speed, bool canStart)
+    : Player(String("ghost") + String(std::to_string(_count)) + String(".png"), x, y, speed), _isFrightened(true), _isStart(canStart)
 {
     _id = _count++;
     _frighetenedTarget = _frightenedTargets[_id];
+    _startCoordinates = Vector2f(945, 420);
 
     _direction = Direction::LEFT;
     _speed = speed;
@@ -23,28 +24,30 @@ void Ghost::update(float time, const Vector2f pacmanCoordinates, Direction pacma
 {
     _isFrightened = isFrightened;
 
-    _target = getTarget(pacmanCoordinates, pacmanDirection);
+    if (_isStart) {
+        _target = getTarget(pacmanCoordinates, pacmanDirection);
 
-    setDirection(map);
+        setDirection(map);
 
-    switch (_direction)
-    {
-    case Direction::RIGHT:
-        _acceleration = Vector2f(_speed, 0);
-        break;
-    case Direction::LEFT:
-        _acceleration = Vector2f(-_speed, 0);
-        break;
-    case Direction::DOWN:
-        _acceleration = Vector2f(0, _speed);
-        break;
-    case Direction::UP:
-        _acceleration = Vector2f(0, -_speed);
-        break;
+        switch (_direction)
+        {
+        case Direction::RIGHT:
+            _acceleration = Vector2f(_speed, 0);
+            break;
+        case Direction::LEFT:
+            _acceleration = Vector2f(-_speed, 0);
+            break;
+        case Direction::DOWN:
+            _acceleration = Vector2f(0, _speed);
+            break;
+        case Direction::UP:
+            _acceleration = Vector2f(0, -_speed);
+            break;
+        }
+
+        _x += _acceleration.x * time;
+        _y += _acceleration.y * time;
     }
-
-    _x += _acceleration.x * time;
-    _y += _acceleration.y * time;
 
     _sprite.setPosition(_x, _y);
     animate(time);
@@ -55,6 +58,15 @@ void Ghost::setStartCoordinates()
     _x = _startCoordinates.x;
     _y = _startCoordinates.y;
     _direction = Direction::LEFT;
+}
+
+bool Ghost::isStart()
+{
+    return _isStart;
+}
+void Ghost::start()
+{
+    _isStart = true;
 }
 
 bool Ghost::canGoRight(const Map& map)
@@ -114,7 +126,7 @@ void Ghost::setDirection(const Map& map)
 
 void Ghost::animate(float time)
 {
-    if (!_isFrightened) {
+    if (!_isFrightened || !_isStart) {
         _currentFrame += 0.0035 * time;
         if (_currentFrame > 2)
             _currentFrame = 0;

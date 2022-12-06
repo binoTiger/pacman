@@ -10,6 +10,7 @@ public:
     void update(float time, Map& map);
     void setStartCoordinates();
     sf::Text score();
+    unsigned pointsEaten();
     const unsigned getLifes() const;
     void reduceLifes();
     sf::Sprite lifes();
@@ -28,6 +29,7 @@ private:
 
 private:
     unsigned _score;
+    unsigned _pointsEaten;
     sf::Font _font;
     sf::Text _text;
     unsigned _lives;
