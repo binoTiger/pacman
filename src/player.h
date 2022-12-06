@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <sstream>
+#include <iostream>
 
 #include "map.h"
 
@@ -15,12 +16,18 @@ enum class Direction
 class Player
 {
 public:
-    Player(sf::String file, float x, float y);
+    Player(sf::String file, float x, float y, float speed);
     sf::Sprite sprite();
+    const sf::Vector2f getCoordinates() const;
+    static float distance(float x1, float y1, float x2, float y2);
+    static float distance(float coordinate1, float coordinate2);
+    static float distance(sf::Vector2f coordinates1, sf::Vector2f coordinates2);
+    static float distance(float x1, float y1, sf::Vector2f coordinates2);
 
 protected:
     float _x, _y;
-    float _dx, _dy;
+    sf::Vector2f _startCoordinates;
+    sf::Vector2f _acceleration;
     float _speed;
     Direction _direction;
     sf::String _file;
@@ -28,27 +35,4 @@ protected:
     sf::Texture _texture;
     sf::Sprite _sprite;
     float _currentFrame;
-};
-
-class Pacman : public Player
-{
-public:
-    Pacman(sf::String file, float x, float y);
-
-    void checkKeys(const sf::Event::KeyEvent& event, const Map& map);
-    void update(float time, Map& map);
-    sf::Text score();
-
-private:
-    bool CanGoRight(const Map& map);
-    bool CanGoLeft(const Map& map);
-    bool CanGoDown(const Map& map);
-    bool CanGoUp(const Map& map);
-    void interactionWithMap(Map& map);
-    void animate(float time);
-
-private:
-    int _score;
-    sf::Font _font;
-    sf::Text _text;
 };

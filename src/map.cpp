@@ -5,6 +5,7 @@ using namespace sf;
 Map::Map()
 {
     map_image.loadFromFile("../images/map.png");
+    map_image.createMaskFromColor(Color::White);
     map_texture.loadFromImage(map_image);
     map_sprite.setTexture(map_texture);
 }
@@ -16,10 +17,49 @@ void Map::drawMap(RenderWindow& window)
             switch (tiles[i][j])
             {
             case 0:
+            case 100000:
+            case 100001:
+            case 100010:
+            case 100011:
+            case 100100:
+            case 100101:
+            case 100110:
+            case 100111:
+            case 101000:
+            case 101001:
+            case 101010:
+            case 101011:
+            case 101100:
+            case 101101:
+            case 101110:
+            case 101111:
                 map_sprite.setTextureRect(IntRect(0, 0, 30, 30));
                 break;
+
             case 1:
+            case 110000:
+            case 110001:
+            case 110010:
+            case 110011:
+            case 110100:
+            case 110101:
+            case 110110:
+            case 110111:
+            case 111000:
+            case 111001:
+            case 111010:
+            case 111011:
+            case 111100:
+            case 111101:
+            case 111110:
+            case 111111:
                 map_sprite.setTextureRect(IntRect(330, 0, 30, 30));
+                break;
+
+            case 121001:
+            case 121010:
+            case 121100:
+                map_sprite.setTextureRect(IntRect(330, 30, 30, 30));
                 break;
 
             case 11:
@@ -33,6 +73,12 @@ void Map::drawMap(RenderWindow& window)
                 break;
             case 14:
                 map_sprite.setTextureRect(IntRect(60, 29, 30, -30));
+                break;
+            case 11000:
+                map_sprite.setTextureRect(IntRect(360, 0, 30, 30));
+                break;
+            case 21000:
+                map_sprite.setTextureRect(IntRect(390, 0, -30, 30));
                 break;
 
             case 21:
