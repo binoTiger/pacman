@@ -17,14 +17,17 @@ int main()
 
     Menu menu;
     menu.drawMenu(window);
+    window.clear();
 
     Pacman pacman("pacman.png", 945, 780);
 
     std::vector<Ghost*> ghostsVector;
-    ghostsVector.push_back(new Ghost(13 * 30 + 540 + 15, 14 * 30, 0.095, true));
-    ghostsVector.push_back(new Ghost(13 * 30 + 540 + 15, 17 * 30, 0.095, false));
-    ghostsVector.push_back(new Ghost(11 * 30 + 540 + 15, 17 * 30, 0.095, false));
-    ghostsVector.push_back(new Ghost(15 * 30 + 540 + 15, 17 * 30, 0.095, false));
+    if (menu.selectedMode() != GameMode::TRAINING) {
+        ghostsVector.push_back(new Ghost(13 * 30 + 540 + 15, 14 * 30, 0.095, true));
+        ghostsVector.push_back(new Ghost(13 * 30 + 540 + 15, 17 * 30, 0.095, false));
+        ghostsVector.push_back(new Ghost(11 * 30 + 540 + 15, 17 * 30, 0.095, false));
+        ghostsVector.push_back(new Ghost(15 * 30 + 540 + 15, 17 * 30, 0.095, false));
+    }
 
     Map map;
 
@@ -34,24 +37,24 @@ int main()
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
-        if (!ghostsVector[1]->isStart()) {
-            ghostsSpawnTimer += time;
-        }
         clock.restart();
         time /= 800;
 
-        if (ghostsSpawnTimer > 2000000 && !ghostsVector[1]->isStart()) {
-            ghostsVector[1]->start();
-            ghostsSpawnTimer = 0;
-        }
-
-        if (!ghostsVector[2]->isStart() && pacman.pointsEaten() > 30) {
-            ghostsVector[2]->start();
-        }
-
-        if (!ghostsVector[3]->isStart() && pacman.pointsEaten() > 80) {
-            ghostsVector[3]->start();
-        }
+        if (menu.selectedMode() != GameMode::TRAINING) {
+            if (!ghostsVector[1]->isStart()) {
+                ghostsSpawnTimer += time;
+            }
+            if (ghostsSpawnTimer > 2000000 && !ghostsVector[1]->isStart()) {
+                ghostsVector[1]->start();
+                ghostsSpawnTimer = 0;
+            }
+            if (!ghostsVector[2]->isStart() && pacman.pointsEaten() > 30) {
+                ghostsVector[2]->start();
+            }
+            if (!ghostsVector[3]->isStart() && pacman.pointsEaten() > 80) {
+                ghostsVector[3]->start();
+            }
+        }     
 
         Event event;
         while (window.pollEvent(event))
