@@ -649,6 +649,11 @@ public:
         return _gameMode;
     }
 
+    std::vector<std::string> playersParameters()
+    {
+        return _parameters;
+    }
+
 private:
     bool _menuIsOpen;
     std::vector<std::string> _parameters;

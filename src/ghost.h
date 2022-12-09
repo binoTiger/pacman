@@ -9,6 +9,7 @@ public:
     void setStartCoordinates();
     bool isStart();
     void start();
+    bool isFrightened();
 
     static unsigned _count;
 

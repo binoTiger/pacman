@@ -19,10 +19,19 @@ int main()
     menu.drawMenu(window);
     window.clear();
 
-    Pacman pacman("pacman.png", 945, 780);
+    auto mode = menu.selectedMode();
+
+    std::vector<Pacman*> pacmanVector;
+    if (mode != GameMode::DUO) {
+        pacmanVector.push_back(new Pacman(menu.playersParameters()[1], menu.playersParameters()[2], 945, 780, 0.1));
+    }
+    else {
+        pacmanVector.push_back(new Pacman(menu.playersParameters()[1], menu.playersParameters()[2], 925, 780, 0.1));
+        pacmanVector.push_back(new Pacman(menu.playersParameters()[4], menu.playersParameters()[5], 965, 780, 0.1));
+    }
 
     std::vector<Ghost*> ghostsVector;
-    if (menu.selectedMode() != GameMode::TRAINING) {
+    if (mode != GameMode::TRAINING) {
         ghostsVector.push_back(new Ghost(13 * 30 + 540 + 15, 14 * 30, 0.095, true));
         ghostsVector.push_back(new Ghost(13 * 30 + 540 + 15, 17 * 30, 0.095, false));
         ghostsVector.push_back(new Ghost(11 * 30 + 540 + 15, 17 * 30, 0.095, false));
@@ -32,7 +41,6 @@ int main()
     Map map;
 
     Clock clock;
-    int ghostsSpawnTimer = 0;
 
     while (window.isOpen())
     {
@@ -40,18 +48,19 @@ int main()
         clock.restart();
         time /= 800;
 
-        if (menu.selectedMode() != GameMode::TRAINING) {
+        int pointsEaten = 0;
+        for (auto& player : pacmanVector) {
+            pointsEaten += player->pointsEaten();
+        }
+
+        if (mode != GameMode::TRAINING) {
             if (!ghostsVector[1]->isStart()) {
-                ghostsSpawnTimer += time;
-            }
-            if (ghostsSpawnTimer > 2000000 && !ghostsVector[1]->isStart()) {
                 ghostsVector[1]->start();
-                ghostsSpawnTimer = 0;
             }
-            if (!ghostsVector[2]->isStart() && pacman.pointsEaten() > 30) {
+            if (!ghostsVector[2]->isStart() && pointsEaten > 30) {
                 ghostsVector[2]->start();
             }
-            if (!ghostsVector[3]->isStart() && pacman.pointsEaten() > 80) {
+            if (!ghostsVector[3]->isStart() && pointsEaten > 80) {
                 ghostsVector[3]->start();
             }
         }     
@@ -63,33 +72,48 @@ int main()
                 window.close();
         }
 
-        if (event.type == Event::KeyPressed)
-        {
-            pacman.checkKeys(event.key, map);
+        for (auto& player : pacmanVector) {
+            player->checkKeys(map);
         }
-
-        pacman.update(time, map);
-
-        for (auto& ghost : ghostsVector) {
-            (*ghost).update(time, pacman.getCoordinates(), pacman.getDirection(), pacman.isBoosted(), map);
+        for (auto& player : pacmanVector) {
+            player->update(time, map);
         }
+        
+        if (mode == GameMode::SINGLE) {
+            for (auto& ghost : ghostsVector) {
+                (*ghost).update(time, pacmanVector[0]->getCoordinates(), pacmanVector[0]->getDirection(), pacmanVector[0]->isBoosted(), map);
+            }
 
-        for (auto& ghost : ghostsVector) {
-            ghostAndPacmanInteraction(pacman, (*ghost));
+            for (auto& ghost : ghostsVector) {
+                ghostAndPacmanInteraction((*pacmanVector[0]), (*ghost));
+            }
         }
+        if (mode == GameMode::DUO) {
+            ghostsVector[0]->update(time, pacmanVector[0]->getCoordinates(), pacmanVector[0]->getDirection(), pacmanVector[0]->isBoosted() || pacmanVector[1]->isBoosted(), map);
+            ghostsVector[1]->update(time, pacmanVector[1]->getCoordinates(), pacmanVector[1]->getDirection(), pacmanVector[0]->isBoosted() || pacmanVector[1]->isBoosted(), map);
+            ghostsVector[2]->update(time, pacmanVector[0]->getCoordinates(), pacmanVector[0]->getDirection(), pacmanVector[0]->isBoosted() || pacmanVector[1]->isBoosted(), map);
+            ghostsVector[3]->update(time, pacmanVector[1]->getCoordinates(), pacmanVector[1]->getDirection(), pacmanVector[0]->isBoosted() || pacmanVector[1]->isBoosted(), map);
 
-        if (pacman.getLifes() == 0)
-        {
-            window.close();
+            for (auto& ghost : ghostsVector) {
+                ghostAndPacmanInteraction((*pacmanVector[0]), (*pacmanVector[1]), (*ghost));
+            }
+
+            pacmanAndPacmanInteraction((*pacmanVector[0]), (*pacmanVector[1]));
         }
 
         window.clear();
 
         map.drawMap(window);
 
-        window.draw(pacman.score());
-        window.draw(pacman.lifes());
-        window.draw(pacman.sprite());
+        for (auto& player : pacmanVector) {
+            window.draw(player->score());
+        }
+        for (auto& player : pacmanVector) {
+            window.draw(player->lifes());
+        }
+        for (auto& player : pacmanVector) {
+            window.draw(player->sprite());
+        }
 
         for (auto& ghost : ghostsVector) {
             window.draw((*ghost).sprite());

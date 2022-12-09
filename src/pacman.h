@@ -4,9 +4,9 @@
 class Pacman : public Player
 {
 public:
-    Pacman(sf::String file, float x, float y);
+    Pacman(std::string color, std::string controlKeys, float x, float y, float speed);
 
-    void checkKeys(const sf::Event::KeyEvent& event, const Map& map);
+    void checkKeys(const Map& map);
     void update(float time, Map& map);
     void setStartCoordinates();
     sf::Text score();
@@ -28,6 +28,7 @@ private:
     void animate(float time);
 
 private:
+    float _commonSpeed;
     unsigned _score;
     unsigned _pointsEaten;
     sf::Font _font;
@@ -40,4 +41,7 @@ private:
     int _immortalTimer;
     bool _isBoosted;
     int _boostedTimer;
+    std::vector<sf::Keyboard::Key> _controlKeys;
+    static unsigned _count;
+    unsigned _id;
 };

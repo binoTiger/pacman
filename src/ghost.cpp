@@ -64,9 +64,15 @@ bool Ghost::isStart()
 {
     return _isStart;
 }
+
 void Ghost::start()
 {
     _isStart = true;
+}
+
+bool Ghost::isFrightened()
+{
+    return _isFrightened;
 }
 
 bool Ghost::canGoRight(const Map& map)
