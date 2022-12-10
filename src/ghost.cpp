@@ -2,14 +2,11 @@
 
 using namespace sf;
 
-unsigned Ghost::_count = 0;
 std::vector<Vector2f> Ghost::_frightenedTargets = { Vector2f(23 * 30 + 540, 4 * 30), Vector2f(4 * 30 + 540, 4 * 30), Vector2f(25 * 30 + 540, 32 * 30), Vector2f(1 * 30 + 540, 29 * 30) };
 
-Ghost::Ghost(float x, float y, float speed, bool canStart)
-    : Player(String("ghost") + String(std::to_string(_count)) + String(".png"), x, y, speed), _isFrightened(true), _isStart(canStart)
+Ghost::Ghost(String imageName, float x, float y, float speed, bool canStart)
+    : Player(imageName, x, y, speed), _isFrightened(true), _isStart(canStart)
 {
-    _id = _count++;
-    _frighetenedTarget = _frightenedTargets[_id];
     _startCoordinates = Vector2f(945, 420);
 
     _direction = Direction::LEFT;
@@ -146,46 +143,87 @@ void Ghost::animate(float time)
     }
 }
 
-Vector2f Ghost::getTarget(Vector2f pacmanCoordinates, Direction pacmanDirection)
+RedGhost::RedGhost(float x, float y, float speed, bool canStart)
+    : Ghost("ghost0.png", x, y, speed, canStart)
+{
+    _frighetenedTarget = _frightenedTargets[0];
+}
+
+Vector2f RedGhost::getTarget(Vector2f pacmanCoordinates, Direction pacmanDirection)
 {
     if (_isFrightened) {
         return _frighetenedTarget;
     }
 
-    switch (_id)
+    return pacmanCoordinates;
+}
+
+PinkGhost::PinkGhost(float x, float y, float speed, bool canStart)
+    : Ghost("ghost1.png", x, y, speed, canStart)
+{
+    _frighetenedTarget = _frightenedTargets[1];
+}
+
+Vector2f PinkGhost::getTarget(Vector2f pacmanCoordinates, Direction pacmanDirection)
+{
+    if (_isFrightened) {
+        return _frighetenedTarget;
+    }
+
+    switch (pacmanDirection)
     {
-    case 0:
+    case Direction::RIGHT:
+        return pacmanCoordinates + Vector2f(120, 0);
+    case Direction::LEFT:
+        return pacmanCoordinates + Vector2f(-120, 0);
+    case Direction::DOWN:
+        return pacmanCoordinates + Vector2f(0, 120);
+    case Direction::UP:
+        return pacmanCoordinates + Vector2f(0, -120);
+    }
+}
+
+BlueGhost::BlueGhost(float x, float y, float speed, bool canStart)
+    : Ghost("ghost2.png", x, y, speed, canStart)
+{
+    _frighetenedTarget = _frightenedTargets[2];
+}
+
+Vector2f BlueGhost::getTarget(Vector2f pacmanCoordinates, Direction pacmanDirection)
+{
+    if (_isFrightened) {
+        return _frighetenedTarget;
+    }
+
+    switch (pacmanDirection)
+    {
+    case Direction::RIGHT:
+        return pacmanCoordinates + Vector2f(60, 0);
+    case Direction::LEFT:
+        return pacmanCoordinates + Vector2f(-60, 0);
+    case Direction::DOWN:
+        return pacmanCoordinates + Vector2f(0, 60);
+    case Direction::UP:
+        return pacmanCoordinates + Vector2f(0, -60);
+    }
+}
+
+OrangeGhost::OrangeGhost(float x, float y, float speed, bool canStart)
+    : Ghost("ghost3.png", x, y, speed, canStart)
+{
+    _frighetenedTarget = _frightenedTargets[3];
+}
+
+Vector2f OrangeGhost::getTarget(Vector2f pacmanCoordinates, Direction pacmanDirection)
+{
+    if (_isFrightened) {
+        return _frighetenedTarget;
+    }
+
+    if (distance(_x, _y, pacmanCoordinates) > 350) {
         return pacmanCoordinates;
-    case 1:
-        switch (pacmanDirection)
-        {
-        case Direction::RIGHT:
-            return pacmanCoordinates + Vector2f(120, 0);
-        case Direction::LEFT:
-            return pacmanCoordinates + Vector2f(-120, 0);
-        case Direction::DOWN:
-            return pacmanCoordinates + Vector2f(0, 120);
-        case Direction::UP:
-            return pacmanCoordinates + Vector2f(0, -120);
-        }
-    case 2:
-        switch (pacmanDirection)
-        {
-        case Direction::RIGHT:
-            return pacmanCoordinates + Vector2f(60, 0);
-        case Direction::LEFT:
-            return pacmanCoordinates + Vector2f(-60, 0);
-        case Direction::DOWN:
-            return pacmanCoordinates + Vector2f(0, 60);
-        case Direction::UP:
-            return pacmanCoordinates + Vector2f(0, -60);
-        }
-    case 3:
-        if (distance(_x, _y, pacmanCoordinates) > 350) {
-            return pacmanCoordinates;
-        }
-        else {
-            return _frighetenedTarget;
-        }
+    }
+    else {
+        return _frighetenedTarget;
     }
 }

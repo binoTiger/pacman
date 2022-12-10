@@ -2,12 +2,9 @@
 
 using namespace sf;
 
-unsigned Pacman::_count = 0;
-
 Pacman::Pacman(std::string color, std::string controlKeys, float x, float y, float speed)
     : Player(color + "Pacman.png", x, y, 0), _commonSpeed(speed), _score(0), _lives(3), _isImmortal(false), _immortalTimer(0), _isBoosted(false), _boostedTimer(0)
 {
-    _id = _count++;
     _font.loadFromFile("../fonts/CrackMan.TTF");
     _text = Text("", _font, 40);
     _text.setFillColor(Color::Yellow);
@@ -125,20 +122,6 @@ void Pacman::setStartCoordinates()
     _speed = _commonSpeed;
 }
 
-Text Pacman::score()
-{
-    std::ostringstream playerScore;
-    playerScore << _score;
-    _text.setString("SCORE: " + playerScore.str());
-    Vector2f position(545 + 560 * _id, 30);
-    if (_id == 1 && _score > 1000) {
-        position.x -= 40;
-    }
-    _text.setPosition(position);
-
-    return _text;
-}
-
 unsigned Pacman::pointsEaten()
 {
     return _pointsEaten;
@@ -152,14 +135,6 @@ const unsigned Pacman::getLifes() const
 void Pacman::reduceLifes()
 {
     --_lives;
-}
-
-Sprite Pacman::lifes()
-{
-    _spriteOfLifes.setTextureRect(IntRect(0, 0, 40 + (_lives - 1) * 55, 40));
-    _spriteOfLifes.setPosition(545 + 680 * _id, 1030);
-
-    return _spriteOfLifes;
 }
 
 const bool Pacman::isImmortal() const
@@ -212,18 +187,6 @@ void Pacman::animate(float time)
         _currentFrame = 0;
     }
 
-    /*if (!_isImmortal) {
-        _currentFrame += 0.0035 * time;
-        if (_currentFrame >= 2) {
-            _currentFrame = 0;
-        }
-    }
-    else {
-        _currentFrame += 0.007 * time;
-        if (_currentFrame > 3) {
-            _currentFrame = 0;
-        }
-    }*/
     if (_isImmortal) {
         _currentFrame += 0.007 * time;
         if (_currentFrame > 3) {
@@ -298,4 +261,57 @@ void Pacman::interactionWithMap(Map& map)
             }
         }
     }
+}
+
+Pacman1::Pacman1(std::string color, std::string controlKeys, float x, float y, float speed)
+    : Pacman(color, controlKeys, x, y, speed)
+{}
+
+Sprite Pacman1::lifes()
+{
+    _spriteOfLifes.setTextureRect(IntRect(0, 0, 40 + (_lives - 1) * 55, 40));
+    _spriteOfLifes.setPosition(545, 1030);
+
+    return _spriteOfLifes;
+}
+
+Text Pacman1::score()
+{
+    std::ostringstream playerScore;
+    playerScore << _score;
+    _text.setString("SCORE: " + playerScore.str());
+
+    Vector2f position(545, 30);
+    _text.setPosition(position);
+
+    return _text;
+}
+
+Pacman2::Pacman2(std::string color, std::string controlKeys, float x, float y, float speed)
+    : Pacman(color, controlKeys, x, y, speed)
+{
+    _direction = Direction::LEFT;
+}
+
+Sprite Pacman2::lifes()
+{
+    _spriteOfLifes.setTextureRect(IntRect(0, 0, 40 + (_lives - 1) * 55, 40));
+    _spriteOfLifes.setPosition(545 + 680, 1030);
+
+    return _spriteOfLifes;
+}
+
+Text Pacman2::score()
+{
+    std::ostringstream playerScore;
+    playerScore << _score;
+    _text.setString("SCORE: " + playerScore.str());
+
+    Vector2f position(545 + 560, 30);
+    if (_score > 1000) {
+        position.x -= 40;
+    }
+    _text.setPosition(position);
+
+    return _text;
 }

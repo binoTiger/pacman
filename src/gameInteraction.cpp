@@ -15,7 +15,7 @@ void ghostAndPacmanInteraction(Pacman& pacman, Ghost& ghost)
 	}
 }
 
-void ghostAndPacmanInteraction(Pacman& pacman1, Pacman& pacman2, Ghost& ghost)
+void ghostAndPacmansInteraction(Pacman& pacman1, Pacman& pacman2, Ghost& ghost)
 {
 	auto pacman1Coordinates = pacman1.getCoordinates();
 	auto pacman2Coordinates = pacman2.getCoordinates();

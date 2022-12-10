@@ -134,6 +134,8 @@ constexpr unsigned WINDOW_HEIGHT = 1080;
 #include "screen_1.h"
 #include "screen_2.h"
 #include "screen_3.h"
+#include "screen_4.h"
+#include "screen_5.h"
 
 int main(int argc, char** argv)
 {
@@ -151,8 +153,12 @@ int main(int argc, char** argv)
 	Screens.push_back(&s1);
 	menu_2 s2;
 	Screens.push_back(&s2);
-	game_screen s3;
+	game_screen_single s3;
 	Screens.push_back(&s3);
+	game_screen_duo s4;
+	Screens.push_back(&s4);
+	game_screen_training s5;
+	Screens.push_back(&s5);
 	
 
 	//Main loop

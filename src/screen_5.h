@@ -10,7 +10,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class game_screen_single : public cScreen
+class game_screen_training : public cScreen
 {
 public:
     //game_screen();

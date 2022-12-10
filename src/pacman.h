@@ -9,17 +9,18 @@ public:
     void checkKeys(const Map& map);
     void update(float time, Map& map);
     void setStartCoordinates();
-    sf::Text score();
     unsigned pointsEaten();
     const unsigned getLifes() const;
     void reduceLifes();
-    sf::Sprite lifes();
     const bool isImmortal() const;
     const bool isBoosted() const;
     void increaseScoreIfEatGhost();
     const Direction getDirection() const;
+    
+    virtual sf::Text score() = 0;
+    virtual sf::Sprite lifes() = 0;
 
-private:
+protected:
     bool CanGoRight(const Map& map);
     bool CanGoLeft(const Map& map);
     bool CanGoDown(const Map& map);
@@ -27,7 +28,7 @@ private:
     void interactionWithMap(Map& map);
     void animate(float time);
 
-private:
+protected:
     float _commonSpeed;
     unsigned _score;
     unsigned _pointsEaten;
@@ -42,6 +43,22 @@ private:
     bool _isBoosted;
     int _boostedTimer;
     std::vector<sf::Keyboard::Key> _controlKeys;
-    static unsigned _count;
-    unsigned _id;
+};
+
+class Pacman1 : public Pacman
+{
+public:
+    Pacman1(std::string color, std::string controlKeys, float x, float y, float speed);
+    
+    virtual sf::Text score();
+    virtual sf::Sprite lifes();
+};
+
+class Pacman2 : public Pacman
+{
+public:
+    Pacman2(std::string color, std::string controlKeys, float x, float y, float speed);
+
+    virtual sf::Text score();
+    virtual sf::Sprite lifes();
 };

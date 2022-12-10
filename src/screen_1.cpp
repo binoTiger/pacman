@@ -68,10 +68,10 @@ int menu_1::Run(sf::RenderWindow& window)
                 return 3;
             case 2:
                 _gameMode = GameMode::DUO;
-                return 3;
+                return 4;
             case 3:
                 _gameMode = GameMode::TRAINING;
-                return 3;
+                return 5;
             }
         }
         window.clear();
