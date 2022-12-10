@@ -149,20 +149,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cScreen.cpp" />
+    <ClCompile Include="gameInteraction.cpp" />
     <ClCompile Include="ghost.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="pacman.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="screen_0.cpp" />
+    <ClCompile Include="screen_1.cpp" />
+    <ClCompile Include="screen_2.cpp" />
+    <ClCompile Include="screen_3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cScreen.h" />
     <ClInclude Include="gameInteraction.h" />
     <ClInclude Include="ghost.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="pacman.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="screen_0.h" />
+    <ClInclude Include="screen_1.h" />
+    <ClInclude Include="screen_2.h" />
+    <ClInclude Include="screen_3.h" />
+    <ClInclude Include="textbox.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
