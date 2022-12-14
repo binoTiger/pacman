@@ -8,7 +8,8 @@ public:
 
     void checkKeys(const Map& map);
     void update(float time, Map& map);
-    void setStartCoordinates();
+    void restart();
+    void newLevel(float speed);
     unsigned pointsEaten();
     const unsigned getLifes() const;
     void reduceLifes();
@@ -16,7 +17,7 @@ public:
     const bool isBoosted() const;
     void increaseScoreIfEatGhost();
     const Direction getDirection() const;
-    
+
     virtual sf::Text score() = 0;
     virtual sf::Sprite lifes() = 0;
 
@@ -29,7 +30,6 @@ protected:
     void animate(float time);
 
 protected:
-    float _commonSpeed;
     unsigned _score;
     unsigned _pointsEaten;
     sf::Font _font;
@@ -49,7 +49,7 @@ class Pacman1 : public Pacman
 {
 public:
     Pacman1(std::string color, std::string controlKeys, float x, float y, float speed);
-    
+
     virtual sf::Text score();
     virtual sf::Sprite lifes();
 };

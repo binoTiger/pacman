@@ -18,7 +18,7 @@ protected:
     bool canGoUp(const Map& map);
     void setDirection(const Map& map);
     void animate(float time);
-    
+
     virtual sf::Vector2f getTarget(sf::Vector2f pacmanCoordinates, Direction pacmanDirection) = 0;
 
 protected:

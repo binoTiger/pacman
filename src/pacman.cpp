@@ -3,7 +3,7 @@
 using namespace sf;
 
 Pacman::Pacman(std::string color, std::string controlKeys, float x, float y, float speed)
-    : Player(color + "Pacman.png", x, y, 0), _commonSpeed(speed), _score(0), _lives(3), _isImmortal(false), _immortalTimer(0), _isBoosted(false), _boostedTimer(0)
+    : Player(color + "Pacman.png", x, y, speed), _score(0), _lives(3), _isImmortal(false), _immortalTimer(0), _isBoosted(false), _boostedTimer(0)
 {
     _font.loadFromFile("../fonts/CrackMan.TTF");
     _text = Text("", _font, 40);
@@ -89,7 +89,7 @@ void Pacman::update(float time, Map& map)
     // 1 sec ~ 300
     if (_isImmortal) {
         _immortalTimer += time;
-        if (_immortalTimer > 1500) {
+        if (_immortalTimer > 2500) {
             _isImmortal = false;
             _immortalTimer = 0;
         }
@@ -112,7 +112,7 @@ void Pacman::update(float time, Map& map)
     animate(time);
 }
 
-void Pacman::setStartCoordinates()
+void Pacman::restart()
 {
     _x = _startCoordinates.x;
     _y = _startCoordinates.y;
@@ -120,6 +120,20 @@ void Pacman::setStartCoordinates()
     _isImmortal = true;
     _acceleration = Vector2f(_commonSpeed, 0);
     _speed = _commonSpeed;
+}
+
+void Pacman::newLevel(float speed)
+{
+    _x = _startCoordinates.x;
+    _y = _startCoordinates.y;
+    _commonSpeed = speed;
+    _acceleration = Vector2f(0, 0);
+    _speed = 0;
+    _pointsEaten = 0;
+    _isImmortal = false;
+    _immortalTimer = 0;
+    _isBoosted = false;
+    _boostedTimer = 0;
 }
 
 unsigned Pacman::pointsEaten()

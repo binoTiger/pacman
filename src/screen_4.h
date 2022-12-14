@@ -13,13 +13,15 @@
 class game_screen_duo : public cScreen
 {
 public:
-    //game_screen();
     virtual int Run(sf::RenderWindow& window);
+
 private:
+    void newGame();
+    void newLevel();
 
+private:
+    Map* map;
+    Pacman1* player1;
+    Pacman2* player2;
+    std::vector<Ghost*> ghostsVector;
 };
-
-//game_screen::game_screen()
-//{
-//    
-//}

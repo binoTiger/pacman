@@ -7,7 +7,7 @@ std::vector<std::string> readParametersFromFile(std::string fileName)
     std::vector<std::string> parameters;
 
     if (file.peek() == EOF) {
-        return std::vector<std::string>{ "player", "yellow", "arrows", "player2", "blue", "wasd" };
+        return std::vector<std::string>{ "player", "yellow", "arrows", "player2", "grey", "wasd" };
     }
     else {
         while (!file.eof())
@@ -23,11 +23,11 @@ std::vector<std::string> readParametersFromFile(std::string fileName)
 
 PacmanColors getColor(std::string color)
 {
-    if (color == "blue") {
-        return PacmanColors::BLUE;
+    if (color == "grey") {
+        return PacmanColors::GREY;
     }
-    if (color == "red") {
-        return PacmanColors::RED;
+    if (color == "pink") {
+        return PacmanColors::PINK;
     }
     if (color == "yellow") {
         return PacmanColors::YELLOW;
@@ -41,10 +41,10 @@ std::string setColor(PacmanColors color)
 {
     switch (color)
     {
-    case PacmanColors::BLUE:
-        return "blue";
-    case PacmanColors::RED:
-        return "red";
+    case PacmanColors::GREY:
+        return "grey";
+    case PacmanColors::PINK:
+        return "pink";
     case PacmanColors::YELLOW:
         return "yellow";
     case PacmanColors::GREEN:
@@ -85,3 +85,7 @@ void writeParametersInFile(std::string fileName, std::vector<std::string> parame
 
 GameMode cScreen::_gameMode = GameMode::NONE;
 std::vector<std::string> cScreen::_parameters = {};
+bool cScreen::_isGameStart = false;
+bool cScreen::_isNewLevel = false;
+unsigned cScreen::_level = 0;
+std::vector<sf::Vector2f> cScreen::_levelParameters = { {0.1, 0.095}, {0.1, 0.1}, {0.095, 0.1}, {0.095, 0.105} };

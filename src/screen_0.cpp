@@ -28,6 +28,8 @@ menu_0::menu_0()
 
 int menu_0::Run(sf::RenderWindow& window)
 {
+    sf::Mouse::setPosition(sf::Vector2i(960, 540), window);
+
     startGameKeySprite.setPosition(710, 600);
     settingsKeySprite.setPosition(760, 690);
     exitGameKeySprite.setPosition(860, 800);

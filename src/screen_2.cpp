@@ -14,29 +14,35 @@ menu_2::menu_2()
     secondPlayerImage.loadFromFile("../images/secondPlayer.png");
     nicknameImage.loadFromFile("../images/nickname.png");
     chooseColorImage.loadFromFile("../images/chooseColor.png");
-    blueImage.loadFromFile("../images/blue.png");
+    greyImage.loadFromFile("../images/grey.png");
     greenImage.loadFromFile("../images/green.png");;
-    redImage.loadFromFile("../images/red.png");
+    pinkImage.loadFromFile("../images/pink.png");
     yellowImage.loadFromFile("../images/yellow.png");
-    blueColorImage.loadFromFile("../images/blueColor.png");
+    greyColorImage.loadFromFile("../images/greyColor.png");
     greenColorImage.loadFromFile("../images/greenColor.png");;
-    redColorImage.loadFromFile("../images/redColor.png");
+    pinkColorImage.loadFromFile("../images/pinkColor.png");
     yellowColorImage.loadFromFile("../images/yellowColor.png");
     selectManagementImage.loadFromFile("../images/selectManagement.png");
     arrowsImage.loadFromFile("../images/arrows.png");
     wasdImage.loadFromFile("../images/wasd.png");
 
+    greyColorImage.createMaskFromColor(sf::Color::Green);
+    pinkColorImage.createMaskFromColor(sf::Color::Green);
+    greenColorImage.createMaskFromColor(sf::Color::Green);
+    yellowColorImage.createMaskFromColor(sf::Color::Green);
+
+
     firstPlayerTexture.loadFromImage(firstPlayerImage);
     secondPlayerTexture.loadFromImage(secondPlayerImage);
     nicknameTexture.loadFromImage(nicknameImage);
     chooseColorTexture.loadFromImage(chooseColorImage);
-    blueTexture.loadFromImage(blueImage);
+    greyTexture.loadFromImage(greyImage);
     greenTexture.loadFromImage(greenImage);
-    redTexture.loadFromImage(redImage);
+    pinkTexture.loadFromImage(pinkImage);
     yellowTexture.loadFromImage(yellowImage);
-    blueColorTexture.loadFromImage(blueColorImage);
+    greyColorTexture.loadFromImage(greyColorImage);
     greenColorTexture.loadFromImage(greenColorImage);
-    redColorTexture.loadFromImage(redColorImage);
+    pinkColorTexture.loadFromImage(pinkColorImage);
     yellowColorTexture.loadFromImage(yellowColorImage);
     selectManagementTexture.loadFromImage(selectManagementImage);
     arrowsTexture.loadFromImage(arrowsImage);
@@ -46,13 +52,13 @@ menu_2::menu_2()
     secondPlayerSprite.setTexture(secondPlayerTexture);
     nicknameSprite.setTexture(nicknameTexture);
     chooseColorSprite.setTexture(chooseColorTexture);
-    blueSprite.setTexture(blueTexture);
+    greySprite.setTexture(greyTexture);
     greenSprite.setTexture(greenTexture);
-    redSprite.setTexture(redTexture);
+    pinkSprite.setTexture(pinkTexture);
     yellowSprite.setTexture(yellowTexture);
-    blueColorSprite.setTexture(blueColorTexture);
+    greyColorSprite.setTexture(greyColorTexture);
     greenColorSprite.setTexture(greenColorTexture);
-    redColorSprite.setTexture(redColorTexture);
+    pinkColorSprite.setTexture(pinkColorTexture);
     yellowColorSprite.setTexture(yellowColorTexture);
     selectManagementSprite.setTexture(selectManagementTexture);
     arrowsSprite.setTexture(arrowsTexture);
@@ -68,15 +74,15 @@ int menu_2::Run(sf::RenderWindow& window)
     nicknameSprite.setPosition(278, 250);
     chooseColorSprite.setPosition(228, 450);
 
-    blueSprite.setPosition(58, 600);
-    redSprite.setPosition(230, 600);
-    yellowSprite.setPosition(410, 600);
-    greenSprite.setPosition(710, 600);
+    greySprite.setPosition(15, 590);
+    pinkSprite.setPosition(225, 590);
+    yellowSprite.setPosition(405, 597);
+    greenSprite.setPosition(710, 597);
 
-    blueColorSprite.setPosition(119, 700);
-    redColorSprite.setPosition(295, 700);
-    yellowColorSprite.setPosition(535, 700);
-    greenColorSprite.setPosition(760, 700);
+    greyColorSprite.setPosition(75, 700);
+    pinkColorSprite.setPosition(270, 700);
+    yellowColorSprite.setPosition(510, 700);
+    greenColorSprite.setPosition(790, 700);
     selectManagementSprite.setPosition(103, 820);
     arrowsSprite.setPosition(100, 970);
     wasdSprite.setPosition(457, 970);
@@ -91,23 +97,27 @@ int menu_2::Run(sf::RenderWindow& window)
     sf::Sprite chooseColorSprite2 = chooseColorSprite;
     chooseColorSprite2.setPosition(1164, 450);
 
-    sf::Sprite blueSprite2 = blueSprite;
-    blueSprite2.setPosition(994, 600);
-    sf::Sprite redSprite2 = redSprite;
-    redSprite2.setPosition(1166, 600);
+    sf::Sprite greySprite2 = greySprite;
+    greySprite2.setPosition(970, 590);
+    sf::Sprite pinkSprite2 = pinkSprite;
+    pinkSprite2.setPosition(1175, 590);
     sf::Sprite yellowSprite2 = yellowSprite;
-    yellowSprite2.setPosition(1346, 600);
+    yellowSprite2.setPosition(1355, 597);
     sf::Sprite greenSprite2 = greenSprite;
-    greenSprite2.setPosition(1646, 600);
+    greenSprite2.setPosition(1660, 597);
 
-    sf::Sprite blueColorSprite2 = blueColorSprite;
-    blueColorSprite2.setPosition(1055, 700);
-    sf::Sprite redColorSprite2 = redColorSprite;
-    redColorSprite2.setPosition(1231, 700);
+    sf::Sprite greyColorSprite2 = greyColorSprite;
+    greyColorSprite2.setTextureRect(sf::IntRect(75, 0, -75, 75));
+    greyColorSprite2.setPosition(1025, 700);
+    sf::Sprite pinkColorSprite2 = pinkColorSprite;
+    pinkColorSprite2.setTextureRect(sf::IntRect(75, 0, -75, 75));
+    pinkColorSprite2.setPosition(1220, 700);
     sf::Sprite yellowColorSprite2 = yellowColorSprite;
-    yellowColorSprite2.setPosition(1471, 700);
+    yellowColorSprite2.setTextureRect(sf::IntRect(75, 0, -75, 75));
+    yellowColorSprite2.setPosition(1465, 700);
     sf::Sprite greenColorSprite2 = greenColorSprite;
-    greenColorSprite2.setPosition(1696, 700);
+    greenColorSprite2.setTextureRect(sf::IntRect(75, 0, -75, 75));
+    greenColorSprite2.setPosition(1740, 700);
 
     sf::Sprite selectManagementSprite2 = selectManagementSprite;
     selectManagementSprite2.setPosition(1039, 820);
@@ -130,8 +140,8 @@ int menu_2::Run(sf::RenderWindow& window)
         settingNum = 0;
 
         sf::Event event;
-        blueSprite.setColor(sf::Color{ 0xA4FCFF });
-        redSprite.setColor(sf::Color{ 0xA4FCFF });
+        greySprite.setColor(sf::Color{ 0xA4FCFF });
+        pinkSprite.setColor(sf::Color{ 0xA4FCFF });
         yellowSprite.setColor(sf::Color{ 0xA4FCFF });
         greenSprite.setColor(sf::Color{ 0xA4FCFF });
         arrowsSprite.setColor(sf::Color{ 0xA4FCFF });
@@ -139,17 +149,17 @@ int menu_2::Run(sf::RenderWindow& window)
         arrowsSprite2.setColor(sf::Color{ 0xA4FCFF });
         wasdSprite2.setColor(sf::Color{ 0xA4FCFF });
 
-        blueSprite2.setColor(sf::Color{ 0xA4FCFF });
-        redSprite2.setColor(sf::Color{ 0xA4FCFF });
+        greySprite2.setColor(sf::Color{ 0xA4FCFF });
+        pinkSprite2.setColor(sf::Color{ 0xA4FCFF });
         yellowSprite2.setColor(sf::Color{ 0xA4FCFF });
         greenSprite2.setColor(sf::Color{ 0xA4FCFF });
 
-        if (sf::IntRect(58, 600, 160, 70).contains(sf::Mouse::getPosition(window))) {
-            blueSprite.setColor(sf::Color::White);
+        if (sf::IntRect(10, 600, 195, 70).contains(sf::Mouse::getPosition(window))) {
+            greySprite.setColor(sf::Color::White);
             settingNum = 11;
         }
-        if (sf::IntRect(230, 600, 160, 70).contains(sf::Mouse::getPosition(window))) {
-            redSprite.setColor(sf::Color::White);
+        if (sf::IntRect(230, 600, 150, 70).contains(sf::Mouse::getPosition(window))) {
+            pinkSprite.setColor(sf::Color::White);
             settingNum = 12;
         }
         if (sf::IntRect(410, 600, 280, 70).contains(sf::Mouse::getPosition(window))) {
@@ -178,19 +188,19 @@ int menu_2::Run(sf::RenderWindow& window)
             settingNum = 26;
         }
 
-        if (sf::IntRect(1055, 600, 160, 70).contains(sf::Mouse::getPosition(window))) {
-            blueSprite2.setColor(sf::Color::White);
+        if (sf::IntRect(970, 600, 180, 70).contains(sf::Mouse::getPosition(window))) {
+            greySprite2.setColor(sf::Color::White);
             settingNum = 21;
         }
-        if (sf::IntRect(1231, 600, 160, 70).contains(sf::Mouse::getPosition(window))) {
-            redSprite2.setColor(sf::Color::White);
+        if (sf::IntRect(1180, 600, 155, 70).contains(sf::Mouse::getPosition(window))) {
+            pinkSprite2.setColor(sf::Color::White);
             settingNum = 22;
         }
-        if (sf::IntRect(1471, 600, 280, 70).contains(sf::Mouse::getPosition(window))) {
+        if (sf::IntRect(1355, 600, 280, 70).contains(sf::Mouse::getPosition(window))) {
             yellowSprite2.setColor(sf::Color::White);
             settingNum = 23;
         }
-        if (sf::IntRect(1696, 600, 230, 70).contains(sf::Mouse::getPosition(window))) {
+        if (sf::IntRect(1660, 600, 230, 70).contains(sf::Mouse::getPosition(window))) {
             greenSprite2.setColor(sf::Color::White);
             settingNum = 24;
         }
@@ -228,10 +238,10 @@ int menu_2::Run(sf::RenderWindow& window)
             switch (settingNum)
             {
             case 11:
-                _firstPlayerColor = PacmanColors::BLUE;
+                _firstPlayerColor = PacmanColors::GREY;
                 break;
             case 12:
-                _firstPlayerColor = PacmanColors::RED;
+                _firstPlayerColor = PacmanColors::PINK;
                 break;
             case 13:
                 _firstPlayerColor = PacmanColors::YELLOW;
@@ -241,16 +251,18 @@ int menu_2::Run(sf::RenderWindow& window)
                 break;
             case 15:
                 _firstPlayerControls = PacmanControls::ARROWS;
+                _secondPlayerControls = PacmanControls::WASD;
                 break;
             case 16:
                 _firstPlayerControls = PacmanControls::WASD;
+                _secondPlayerControls = PacmanControls::ARROWS;
                 break;
 
             case 21:
-                _secondPlayerColor = PacmanColors::BLUE;
+                _secondPlayerColor = PacmanColors::GREY;
                 break;
             case 22:
-                _secondPlayerColor = PacmanColors::RED;
+                _secondPlayerColor = PacmanColors::PINK;
                 break;
             case 23:
                 _secondPlayerColor = PacmanColors::YELLOW;
@@ -259,9 +271,11 @@ int menu_2::Run(sf::RenderWindow& window)
                 _secondPlayerColor = PacmanColors::GREEN;
                 break;
             case 25:
+                _firstPlayerControls = PacmanControls::WASD;
                 _secondPlayerControls = PacmanControls::ARROWS;
                 break;
             case 26:
+                _firstPlayerControls = PacmanControls::ARROWS;
                 _secondPlayerControls = PacmanControls::WASD;
                 break;
             }
@@ -269,11 +283,11 @@ int menu_2::Run(sf::RenderWindow& window)
 
         switch (_firstPlayerColor)
         {
-        case PacmanColors::BLUE:
-            blueSprite.setColor(sf::Color::Magenta);
+        case PacmanColors::GREY:
+            greySprite.setColor(sf::Color::Magenta);
             break;
-        case PacmanColors::RED:
-            redSprite.setColor(sf::Color::Magenta);
+        case PacmanColors::PINK:
+            pinkSprite.setColor(sf::Color::Magenta);
             break;
         case PacmanColors::YELLOW:
             yellowSprite.setColor(sf::Color::Magenta);
@@ -294,11 +308,11 @@ int menu_2::Run(sf::RenderWindow& window)
 
         switch (_secondPlayerColor)
         {
-        case PacmanColors::BLUE:
-            blueSprite2.setColor(sf::Color::Magenta);
+        case PacmanColors::GREY:
+            greySprite2.setColor(sf::Color::Magenta);
             break;
-        case PacmanColors::RED:
-            redSprite2.setColor(sf::Color::Magenta);
+        case PacmanColors::PINK:
+            pinkSprite2.setColor(sf::Color::Magenta);
             break;
         case PacmanColors::YELLOW:
             yellowSprite2.setColor(sf::Color::Magenta);
@@ -334,20 +348,20 @@ int menu_2::Run(sf::RenderWindow& window)
         window.draw(nicknameSprite2);
         window.draw(chooseColorSprite);
         window.draw(chooseColorSprite2);
-        window.draw(blueSprite);
-        window.draw(redSprite);
+        window.draw(greySprite);
+        window.draw(pinkSprite);
         window.draw(yellowSprite);
         window.draw(greenSprite);
-        window.draw(blueSprite2);
-        window.draw(redSprite2);
+        window.draw(greySprite2);
+        window.draw(pinkSprite2);
         window.draw(yellowSprite2);
         window.draw(greenSprite2);
-        window.draw(blueColorSprite);
-        window.draw(redColorSprite);
+        window.draw(greyColorSprite);
+        window.draw(pinkColorSprite);
         window.draw(yellowColorSprite);
         window.draw(greenColorSprite);
-        window.draw(blueColorSprite2);
-        window.draw(redColorSprite2);
+        window.draw(greyColorSprite2);
+        window.draw(pinkColorSprite2);
         window.draw(yellowColorSprite2);
         window.draw(greenColorSprite2);
         window.draw(selectManagementSprite);

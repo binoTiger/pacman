@@ -1,130 +1,61 @@
-//#include "screen_3.h"
-//
-//int game_screen::Run(sf::RenderWindow& window)
-//{
-//	std::vector<Pacman*> pacmanVector;
-//		if (_gameMode != GameMode::DUO) {
-//			pacmanVector.push_back(new Pacman1(_parameters[1], _parameters[2], 945, 780, 0.1));
-//		}
-//		else {
-//			pacmanVector.push_back(new Pacman1(_parameters[1], _parameters[2], 6 * 30 + 540, 26 * 30, 0.1));
-//			pacmanVector.push_back(new Pacman2(_parameters[4], _parameters[5], 21 * 30 + 540, 26 * 30, 0.1));
-//		}
-//	
-//		std::vector<Ghost*> ghostsVector;
-//		if (_gameMode != GameMode::TRAINING) {
-//			ghostsVector.push_back(new RedGhost(13 * 30 + 540 + 15, 14 * 30, 0.095, true));
-//			ghostsVector.push_back(new PinkGhost(13 * 30 + 540 + 15, 17 * 30, 0.095, false));
-//			ghostsVector.push_back(new BlueGhost(11 * 30 + 540 + 15, 17 * 30, 0.095, false));
-//			ghostsVector.push_back(new OrangeGhost(15 * 30 + 540 + 15, 17 * 30, 0.095, false));
-//		}
-//	
-//		Map map;
-//	
-//		sf::Clock clock;
-//	
-//		while (window.isOpen())
-//		{
-//			float time = clock.getElapsedTime().asMicroseconds();
-//			clock.restart();
-//			time /= 800;
-//	
-//			int pointsEaten = 0;
-//			for (auto& player : pacmanVector) {
-//				pointsEaten += player->pointsEaten();
-//			}
-//	
-//			if (_gameMode != GameMode::TRAINING) {
-//				if (!ghostsVector[1]->isStart()) {
-//					ghostsVector[1]->start();
-//				}
-//				if (!ghostsVector[2]->isStart() && pointsEaten > 30) {
-//					ghostsVector[2]->start();
-//				}
-//				if (!ghostsVector[3]->isStart() && pointsEaten > 80) {
-//					ghostsVector[3]->start();
-//				}
-//			}
-//	
-//			sf::Event event;
-//			while (window.pollEvent(event))
-//			{
-//				if (event.type == sf::Event::Closed) {
-//					window.close();
-//				}
-//				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-//					return 0;
-//				}
-//			}
-//	
-//			for (auto& player : pacmanVector) {
-//				player->checkKeys(map);
-//			}
-//			for (auto& player : pacmanVector) {
-//				player->update(time, map);
-//			}
-//			
-//			if (_gameMode == GameMode::SINGLE) {
-//				for (auto& ghost : ghostsVector) {
-//					(*ghost).update(time, pacmanVector[0]->getCoordinates(), pacmanVector[0]->getDirection(), pacmanVector[0]->isBoosted(), map);
-//				}
-//	
-//				for (auto& ghost : ghostsVector) {
-//					ghostAndPacmanInteraction((*pacmanVector[0]), (*ghost));
-//				}
-//			}
-//			if (_gameMode == GameMode::DUO) {
-//				ghostsVector[0]->update(time, pacmanVector[0]->getCoordinates(), pacmanVector[0]->getDirection(), pacmanVector[0]->isBoosted() || pacmanVector[1]->isBoosted(), map);
-//				ghostsVector[1]->update(time, pacmanVector[1]->getCoordinates(), pacmanVector[1]->getDirection(), pacmanVector[0]->isBoosted() || pacmanVector[1]->isBoosted(), map);
-//				ghostsVector[2]->update(time, pacmanVector[0]->getCoordinates(), pacmanVector[0]->getDirection(), pacmanVector[0]->isBoosted() || pacmanVector[1]->isBoosted(), map);
-//				ghostsVector[3]->update(time, pacmanVector[1]->getCoordinates(), pacmanVector[1]->getDirection(), pacmanVector[0]->isBoosted() || pacmanVector[1]->isBoosted(), map);
-//	
-//				for (auto& ghost : ghostsVector) {
-//					ghostAndPacmanInteraction((*pacmanVector[0]), (*pacmanVector[1]), (*ghost));
-//				}
-//	
-//				pacmanAndPacmanInteraction((*pacmanVector[0]), (*pacmanVector[1]));
-//			}
-//	
-//			window.clear();
-//	
-//			map.drawMap(window);
-//	
-//			for (auto& player : pacmanVector) {
-//				window.draw(player->score());
-//			}
-//			for (auto& player : pacmanVector) {
-//				window.draw(player->lifes());
-//			}
-//			for (auto& player : pacmanVector) {
-//				window.draw(player->sprite());
-//			}
-//	
-//			for (auto& ghost : ghostsVector) {
-//				window.draw((*ghost).sprite());
-//			}
-//	
-//			window.display();
-//		}
-//	
-//		return 0;
-//}
-
 #include "screen_3.h"
 
 using namespace sf;
 
+void game_screen_single::newGame()
+{
+	_level = 0;
+
+	map = new Map();
+
+	player = new Pacman1(_parameters[1], _parameters[2], 945, 780, _levelParameters[0].x);
+
+	ghostsVector.clear();
+	ghostsVector.push_back(new RedGhost(13 * 30 + 540 + 15, 14 * 30, _levelParameters[0].y, true));
+	ghostsVector.push_back(new PinkGhost(13 * 30 + 540 + 15, 17 * 30, _levelParameters[0].y, false));
+	ghostsVector.push_back(new BlueGhost(11 * 30 + 540 + 15, 17 * 30, _levelParameters[0].y, false));
+	ghostsVector.push_back(new OrangeGhost(15 * 30 + 540 + 15, 17 * 30, _levelParameters[0].y, false));
+}
+
+void game_screen_single::newLevel()
+{
+	map = new Map();
+
+	unsigned parameter = 0;
+	if (_level < 2) {
+		parameter = 0;
+	}
+	else if (_level < 4) {
+		parameter = 1;
+	}
+	else if (_level < 6) {
+		parameter = 2;
+	}
+	else {
+		parameter = 3;
+	}
+
+	player->newLevel(_levelParameters[parameter].x);
+
+	ghostsVector.clear();
+	ghostsVector.push_back(new RedGhost(13 * 30 + 540 + 15, 14 * 30, _levelParameters[parameter].y, true));
+	ghostsVector.push_back(new PinkGhost(13 * 30 + 540 + 15, 17 * 30, _levelParameters[parameter].y, false));
+	ghostsVector.push_back(new BlueGhost(11 * 30 + 540 + 15, 17 * 30, _levelParameters[parameter].y, false));
+	ghostsVector.push_back(new OrangeGhost(15 * 30 + 540 + 15, 17 * 30, _levelParameters[parameter].y, false));
+
+	++_level;
+}
+
 int game_screen_single::Run(RenderWindow& window)
 {
-	Pacman1 player(_parameters[1], _parameters[2], 945, 780, 0.1);
-
-	std::vector<Ghost*> ghostsVector;
-	ghostsVector.push_back(new RedGhost(13 * 30 + 540 + 15, 14 * 30, 0.095, true));
-	ghostsVector.push_back(new PinkGhost(13 * 30 + 540 + 15, 17 * 30, 0.095, false));
-	ghostsVector.push_back(new BlueGhost(11 * 30 + 540 + 15, 17 * 30, 0.095, false));
-	ghostsVector.push_back(new OrangeGhost(15 * 30 + 540 + 15, 17 * 30, 0.095, false));
-	
-	Map map;
+	if (!_isGameStart) {
+		_isGameStart = true;
+		newGame();
+	}
+	else if (_isNewLevel) {
+		_isNewLevel = false;
+		newLevel();
+	}
 
 	Clock clock;
 
@@ -137,10 +68,10 @@ int game_screen_single::Run(RenderWindow& window)
 		if (!ghostsVector[1]->isStart()) {
 			ghostsVector[1]->start();
 		}
-		if (!ghostsVector[2]->isStart() && player.pointsEaten() > 30) {
+		if (!ghostsVector[2]->isStart() && (*player).pointsEaten() > 30) {
 			ghostsVector[2]->start();
 		}
-		if (!ghostsVector[3]->isStart() && player.pointsEaten() > 80) {
+		if (!ghostsVector[3]->isStart() && (*player).pointsEaten() > 80) {
 			ghostsVector[3]->start();
 		}
 
@@ -151,30 +82,37 @@ int game_screen_single::Run(RenderWindow& window)
 				window.close();
 			}
 			if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-				return 0;
+				return 6;
 			}
 		}
 
-		player.checkKeys(map);
-		player.update(time, map);
+		(*player).checkKeys(*map);
+		(*player).update(time, (*map));
 
 		if (_gameMode == GameMode::SINGLE) {
 			for (auto& ghost : ghostsVector) {
-				(*ghost).update(time, player.getCoordinates(), player.getDirection(), player.isBoosted(), map);
+				(*ghost).update(time, (*player).getCoordinates(), (*player).getDirection(), (*player).isBoosted(), *map);
 			}
 
 			for (auto& ghost : ghostsVector) {
-				ghostAndPacmanInteraction(player, (*ghost));
+				ghostAndPacmanInteraction((*player), (*ghost));
 			}
 		}
 
 		window.clear();
 
-		map.drawMap(window);
+		if ((*player).pointsEaten() >= 40) {
+			if (checkTeleport(*player)) {
+				_isNewLevel = true;
+				return 3;
+			}
+		}
 
-		window.draw(player.score());
-		window.draw(player.lifes());
-		window.draw(player.sprite());
+		(*map).drawMap(window);
+
+		window.draw((*player).score());
+		window.draw((*player).lifes());
+		window.draw((*player).sprite());
 
 		for (auto& ghost : ghostsVector) {
 			window.draw((*ghost).sprite());

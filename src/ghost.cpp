@@ -10,8 +10,8 @@ Ghost::Ghost(String imageName, float x, float y, float speed, bool canStart)
     _startCoordinates = Vector2f(945, 420);
 
     _direction = Direction::LEFT;
-    _speed = speed;
-    _acceleration = Vector2f(-_speed, 0);
+
+    _acceleration = Vector2f(-_commonSpeed, 0);
 
     _lastVisitedX = (int)((_x - 540)) / 30;
     _lastVisitedY = (int)(_y / 30);
@@ -25,6 +25,13 @@ void Ghost::update(float time, const Vector2f pacmanCoordinates, Direction pacma
         _target = getTarget(pacmanCoordinates, pacmanDirection);
 
         setDirection(map);
+
+        if (_isFrightened) {
+            _speed = _commonSpeed - 0.015;
+        }
+        else {
+            _speed = _commonSpeed;
+        }
 
         switch (_direction)
         {

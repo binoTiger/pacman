@@ -7,8 +7,8 @@
 class menu_0 : public cScreen
 {
 public:
-	menu_0();
-	virtual int Run(sf::RenderWindow& window);
+    menu_0();
+    virtual int Run(sf::RenderWindow& window);
 
 private:
     sf::Image startGameKeyImage;

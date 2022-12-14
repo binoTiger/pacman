@@ -10,6 +10,8 @@ struct Map
 
     void drawMap(sf::RenderWindow& window);
 
+    unsigned playTiles[MAP_HEIGHT][MAP_WIDTH] = {};
+
     unsigned tiles[MAP_HEIGHT][MAP_WIDTH] = {
     {  0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 },
     {  0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 },

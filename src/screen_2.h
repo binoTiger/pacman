@@ -9,8 +9,8 @@
 class menu_2 : public cScreen
 {
 public:
-	menu_2();
-	virtual int Run(sf::RenderWindow& window);
+    menu_2();
+    virtual int Run(sf::RenderWindow& window);
 
 private:
     PacmanColors _firstPlayerColor;
@@ -22,13 +22,13 @@ private:
     sf::Image secondPlayerImage;
     sf::Image nicknameImage;
     sf::Image chooseColorImage;
-    sf::Image blueImage;
+    sf::Image greyImage;
     sf::Image greenImage;
-    sf::Image redImage;
+    sf::Image pinkImage;
     sf::Image yellowImage;
-    sf::Image blueColorImage;
+    sf::Image greyColorImage;
     sf::Image greenColorImage;
-    sf::Image redColorImage;
+    sf::Image pinkColorImage;
     sf::Image yellowColorImage;
     sf::Image selectManagementImage;
     sf::Image arrowsImage;
@@ -38,13 +38,13 @@ private:
     sf::Texture secondPlayerTexture;
     sf::Texture nicknameTexture;
     sf::Texture chooseColorTexture;
-    sf::Texture blueTexture;
+    sf::Texture greyTexture;
     sf::Texture greenTexture;
-    sf::Texture redTexture;
+    sf::Texture pinkTexture;
     sf::Texture yellowTexture;
-    sf::Texture blueColorTexture;
+    sf::Texture greyColorTexture;
     sf::Texture greenColorTexture;
-    sf::Texture redColorTexture;
+    sf::Texture pinkColorTexture;
     sf::Texture yellowColorTexture;
     sf::Texture selectManagementTexture;
     sf::Texture arrowsTexture;
@@ -54,13 +54,13 @@ private:
     sf::Sprite secondPlayerSprite;
     sf::Sprite nicknameSprite;
     sf::Sprite chooseColorSprite;
-    sf::Sprite blueSprite;
+    sf::Sprite greySprite;
     sf::Sprite greenSprite;
-    sf::Sprite redSprite;
+    sf::Sprite pinkSprite;
     sf::Sprite yellowSprite;
-    sf::Sprite blueColorSprite;
+    sf::Sprite greyColorSprite;
     sf::Sprite greenColorSprite;
-    sf::Sprite redColorSprite;
+    sf::Sprite pinkColorSprite;
     sf::Sprite yellowColorSprite;
     sf::Sprite selectManagementSprite;
     sf::Sprite arrowsSprite;

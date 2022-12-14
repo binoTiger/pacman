@@ -136,14 +136,18 @@ constexpr unsigned WINDOW_HEIGHT = 1080;
 #include "screen_3.h"
 #include "screen_4.h"
 #include "screen_5.h"
+#include "screen_6.h"
 
 int main(int argc, char** argv)
 {
+	//Applications variables
 	std::vector<cScreen*> Screens;
 	int screen = 0;
 
+	//Window creation
 	RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "pacman", Style::Fullscreen);
 
+	//Screens preparations
 	menu_0 s0;
 	Screens.push_back(&s0);
 	menu_1 s1;
@@ -156,7 +160,12 @@ int main(int argc, char** argv)
 	Screens.push_back(&s4);
 	game_screen_training s5;
 	Screens.push_back(&s5);
-	
+	pauseMenu s6;
+	Screens.push_back(&s6);
+
+
+
+	//Main loop
 	while (screen >= 0)
 	{
 		screen = Screens[screen]->Run(window);

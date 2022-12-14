@@ -3,7 +3,7 @@
 using namespace sf;
 
 Player::Player(String file, float x, float y, float speed)
-    : _x(x), _y(y), _acceleration(0, 0), _speed(speed), _direction(Direction::RIGHT), _file(file), _currentFrame(0)
+    : _x(x), _y(y), _acceleration(0, 0), _speed(0), _commonSpeed(speed), _direction(Direction::RIGHT), _file(file), _currentFrame(0)
 {
     _startCoordinates = Vector2f(_x, _y);
 

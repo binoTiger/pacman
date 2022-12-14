@@ -13,13 +13,14 @@
 class game_screen_training : public cScreen
 {
 public:
-    //game_screen();
     virtual int Run(sf::RenderWindow& window);
-private:
 
+private:
+    void newGame();
+    void newLevel();
+
+private:
+    Map* map;
+    Pacman1* player;
 };
 
-//game_screen::game_screen()
-//{
-//    
-//}
