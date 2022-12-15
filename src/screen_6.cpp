@@ -74,10 +74,12 @@ int pauseMenu::Run(sf::RenderWindow& window)
 			case 2:
 				_isGameStart = false;
 				window.clear();
+				_needToClean = true;
 				return (int)_gameMode;
 			case 1:
 				_isGameStart = false;
 				window.clear();
+				_needToClean = true;
 				return 0;
 			}
 		}

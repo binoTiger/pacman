@@ -66,10 +66,12 @@ int gameOverSingle::Run(sf::RenderWindow& window)
 			case 1:
 				_isGameStart = false;
 				window.clear();
+				_needToClean = true;
 				return 3;
 			case 2:
 				_isGameStart = false;
 				window.clear();
+				_needToClean = true;
 				return 0;
 			}
 		}

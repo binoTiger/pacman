@@ -37,6 +37,8 @@ int menu_1::Run(sf::RenderWindow& window)
     trainingPlayKeySprite.setPosition(760, 800);
 
     while (secondPageMenuIsOpen) {
+        _gameMode = GameMode::NONE;
+
         menuNum = 0;
         window.clear();
 
@@ -48,15 +50,15 @@ int menu_1::Run(sf::RenderWindow& window)
             window.clear();
             return 0;
         }
-        if (sf::IntRect(810, 600, 300, 100).contains(sf::Mouse::getPosition(window))) {
+        if (sf::IntRect(817, 630, 286, 48).contains(sf::Mouse::getPosition(window))) {
             singlePlayKeySprite.setColor(sf::Color::White);
             menuNum = 1;
         }
-        if (sf::IntRect(860, 700, 200, 100).contains(sf::Mouse::getPosition(window))) {
+        if (sf::IntRect(875, 730, 170, 48).contains(sf::Mouse::getPosition(window))) {
             duoPlayKeySprite.setColor(sf::Color::White);
             menuNum = 2;
         }
-        if (sf::IntRect(760, 800, 400, 100).contains(sf::Mouse::getPosition(window))) {
+        if (sf::IntRect(775, 830, 370, 48).contains(sf::Mouse::getPosition(window))) {
             trainingPlayKeySprite.setColor(sf::Color::White);
             menuNum = 3;
         }

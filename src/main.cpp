@@ -3,7 +3,6 @@
 #include "map.h"
 #include "pacman.h"
 #include "ghost.h"
-#include "menu.h"
 #include "gameInteraction.h"
 
 using namespace sf;
@@ -54,10 +53,17 @@ int main(int argc, char** argv)
 	{
 		screen = Screens[screen]->Run(window);
 
-		if (!cScreen::_isGameStart) {
-			(*Screens[3]).clear();
-			(*Screens[4]).clear();
-			(*Screens[5]).clear();
+		if (!cScreen::_needToClean && screen >= 0) {
+			if (cScreen::_gameMode == GameMode::SINGLE) {
+				(*Screens[3]).clear();
+			}
+			if (cScreen::_gameMode == GameMode::DUO) {
+				(*Screens[4]).clear();
+			}
+			if (cScreen::_gameMode == GameMode::TRAINING) {
+				(*Screens[5]).clear();
+			}
+			cScreen::_needToClean = false;
 		}
 	}
 

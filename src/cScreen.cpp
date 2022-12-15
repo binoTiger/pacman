@@ -87,6 +87,7 @@ void cScreen::clear()
 
 GameMode cScreen::_gameMode = GameMode::NONE;
 std::vector<std::string> cScreen::_parameters = {};
+bool cScreen::_needToClean = false;
 bool cScreen::_isGameStart = false;
 bool cScreen::_isNewLevel = false;
 unsigned cScreen::_level = 1;
