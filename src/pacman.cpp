@@ -2,8 +2,8 @@
 
 using namespace sf;
 
-Pacman::Pacman(String file, float x, float y)
-    : Player(file, x, y, 0), _score(0), _lives(3), _isImmortal(false), _immortalTimer(0), _isBoosted(false), _boostedTimer(0)
+Pacman::Pacman(std::string color, std::string controlKeys, float x, float y, float speed)
+    : Player(color + "Pacman.png", x, y, speed), _score(0), _lives(3), _isImmortal(false), _immortalTimer(0), _isBoosted(false), _boostedTimer(0)
 {
     _font.loadFromFile("../fonts/CrackMan.TTF");
     _text = Text("", _font, 40);
@@ -14,40 +14,45 @@ Pacman::Pacman(String file, float x, float y)
     _lifesImage.createMaskFromColor(Color::Green);
     _lifesTexture.loadFromImage(_lifesImage);
     _spriteOfLifes.setTexture(_lifesTexture);
+
+    if (controlKeys == "arrows") {
+        _controlKeys = { Keyboard::Right, Keyboard::Left, Keyboard::Down, Keyboard::Up };
+        std::cout << "arrow";
+    }
+    if (controlKeys == "wasd") {
+        _controlKeys = { Keyboard::D, Keyboard::A, Keyboard::S, Keyboard::W };
+    }
 };
 
-void Pacman::checkKeys(const Event::KeyEvent& event, const Map& map)
+void Pacman::checkKeys(const Map& map)
 {
-    switch (event.code)
-    {
-    case Keyboard::Right:
+    if (Keyboard::isKeyPressed(_controlKeys[0])) {
         if (CanGoRight(map))
         {
             _direction = Direction::RIGHT;
-            _speed = 0.1;
+            _speed = _commonSpeed;
         }
-        break;
-    case Keyboard::Left:
+    }
+    if (Keyboard::isKeyPressed(_controlKeys[1])) {
         if (CanGoLeft(map))
         {
             _direction = Direction::LEFT;
-            _speed = 0.1;
+            _speed = _commonSpeed;
         }
-        break;
-    case Keyboard::Down:
+    }
+    if (Keyboard::isKeyPressed(_controlKeys[2])) {
         if (CanGoDown(map))
         {
             _direction = Direction::DOWN;
-            _speed = 0.1;
+            _speed = _commonSpeed;
         }
-        break;
-    case Keyboard::Up:
+    }
+    if (Keyboard::isKeyPressed(_controlKeys[3])) {
         if (CanGoUp(map))
         {
             _direction = Direction::UP;
-            _speed = 0.1;
+            _speed = _commonSpeed;
         }
-        break;
     }
 }
 
@@ -91,10 +96,12 @@ void Pacman::update(float time, Map& map)
     }
 
     if (_isBoosted) {
+        _speed = _commonSpeed + 0.03;
         _boostedTimer += time;
         if (_boostedTimer > 5000) {
             _isBoosted = false;
             _boostedTimer = 0;
+            _speed = _commonSpeed;
         }
     }
 
@@ -105,24 +112,28 @@ void Pacman::update(float time, Map& map)
     animate(time);
 }
 
-void Pacman::setStartCoordinates()
+void Pacman::restart()
 {
     _x = _startCoordinates.x;
     _y = _startCoordinates.y;
     _direction = Direction::RIGHT;
     _isImmortal = true;
-    _acceleration = Vector2f(0, 0);
-    _speed = 0;
+    _acceleration = Vector2f(_commonSpeed, 0);
+    _speed = _commonSpeed;
 }
 
-Text Pacman::score()
+void Pacman::newLevel(float speed)
 {
-    std::ostringstream playerScore;
-    playerScore << _score;
-    _text.setString("SCORE: " + playerScore.str());
-    _text.setPosition(545, 30);
-
-    return _text;
+    _x = _startCoordinates.x;
+    _y = _startCoordinates.y;
+    _commonSpeed = speed;
+    _acceleration = Vector2f(0, 0);
+    _speed = 0;
+    _pointsEaten = 0;
+    _isImmortal = false;
+    _immortalTimer = 0;
+    _isBoosted = false;
+    _boostedTimer = 0;
 }
 
 unsigned Pacman::pointsEaten()
@@ -138,14 +149,6 @@ const unsigned Pacman::getLifes() const
 void Pacman::reduceLifes()
 {
     --_lives;
-}
-
-Sprite Pacman::lifes()
-{
-    _spriteOfLifes.setTextureRect(IntRect(0, 0, 40 + (_lives - 1) * 55, 40));
-    _spriteOfLifes.setPosition(545, 1030);
-
-    return _spriteOfLifes;
 }
 
 const bool Pacman::isImmortal() const
@@ -198,15 +201,21 @@ void Pacman::animate(float time)
         _currentFrame = 0;
     }
 
-    if (!_isImmortal) {
-        _currentFrame += 0.0035 * time;
+    if (_isImmortal) {
+        _currentFrame += 0.007 * time;
+        if (_currentFrame > 3) {
+            _currentFrame = 0;
+        }
+    }
+    else if (_isBoosted) {
+        _currentFrame += 0.005 * time;
         if (_currentFrame >= 2) {
             _currentFrame = 0;
         }
     }
     else {
-        _currentFrame += 0.007 * time;
-        if (_currentFrame > 3) {
+        _currentFrame += 0.0035 * time;
+        if (_currentFrame >= 2) {
             _currentFrame = 0;
         }
     }
@@ -266,4 +275,57 @@ void Pacman::interactionWithMap(Map& map)
             }
         }
     }
+}
+
+Pacman1::Pacman1(std::string color, std::string controlKeys, float x, float y, float speed)
+    : Pacman(color, controlKeys, x, y, speed)
+{}
+
+Sprite Pacman1::lifes()
+{
+    _spriteOfLifes.setTextureRect(IntRect(0, 0, 40 + (_lives - 1) * 55, 40));
+    _spriteOfLifes.setPosition(545, 1030);
+
+    return _spriteOfLifes;
+}
+
+Text Pacman1::score()
+{
+    std::ostringstream playerScore;
+    playerScore << _score;
+    _text.setString("SCORE: " + playerScore.str());
+
+    Vector2f position(545, 30);
+    _text.setPosition(position);
+
+    return _text;
+}
+
+Pacman2::Pacman2(std::string color, std::string controlKeys, float x, float y, float speed)
+    : Pacman(color, controlKeys, x, y, speed)
+{
+    _direction = Direction::LEFT;
+}
+
+Sprite Pacman2::lifes()
+{
+    _spriteOfLifes.setTextureRect(IntRect(0, 0, 40 + (_lives - 1) * 55, 40));
+    _spriteOfLifes.setPosition(545 + 680, 1030);
+
+    return _spriteOfLifes;
+}
+
+Text Pacman2::score()
+{
+    std::ostringstream playerScore;
+    playerScore << _score;
+    _text.setString("SCORE: " + playerScore.str());
+
+    Vector2f position(545 + 560, 30);
+    if (_score > 1000) {
+        position.x -= 40;
+    }
+    _text.setPosition(position);
+
+    return _text;
 }

@@ -8,6 +8,7 @@ Map::Map()
     map_image.createMaskFromColor(Color::White);
     map_texture.loadFromImage(map_image);
     map_sprite.setTexture(map_texture);
+
 }
 
 void Map::drawMap(RenderWindow& window)

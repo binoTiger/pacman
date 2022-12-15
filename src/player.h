@@ -29,6 +29,7 @@ protected:
     sf::Vector2f _startCoordinates;
     sf::Vector2f _acceleration;
     float _speed;
+    float _commonSpeed;
     Direction _direction;
     sf::String _file;
     sf::Image _image;
