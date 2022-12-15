@@ -2,40 +2,43 @@
 
 using namespace sf;
 
-void game_screen_training::newGame()
+gameScreenTraining::gameScreenTraining()
 {
-	_level = 0;
+	_fontOfLevels.loadFromFile("../fonts/CrackMan.TTF");
+	_textOfLevels = Text("", _fontOfLevels, 40);
+	_textOfLevels.setFillColor(Color::Yellow);
+	_textOfLevels.setStyle(Text::Bold);
 
-	map = new Map();
+	_textOfReady = Text("", _fontOfLevels, 40);
+	_textOfReady.setFillColor(Color::Yellow);
+	_textOfReady.setStyle(Text::Bold);
 
-	player = new Pacman1(_parameters[1], _parameters[2], 945, 780, _levelParameters[0].x);
+	_textOfGo = Text("", _fontOfLevels, 40);
+	_textOfGo.setFillColor(Color::Yellow);
+	_textOfGo.setStyle(Text::Bold);
+
+	_textOfNewLevels = Text("", _fontOfLevels, 24);
+	_textOfNewLevels.setFillColor(Color::Yellow);
+	_textOfNewLevels.setStyle(Text::Bold);
+
+	_arrowImage.loadFromFile("../images/arrow.png");
+	_arrowImage.createMaskFromColor(Color::Green);
+
+	_arrowTexture.loadFromImage(_arrowImage);
+
+	_leftArrowPosition = { 560, 510 };
+	_rightArrowPosition = { 1270, 510 };
+
+	_arrowLeftSprite.setTexture(_arrowTexture);
+
+	_arrowRightSprite.setTexture(_arrowTexture);
+	_arrowRightSprite.setTextureRect(IntRect(90, 0, -90, 30));
 }
 
-void game_screen_training::newLevel()
+int gameScreenTraining::Run(RenderWindow& window)
 {
-	map = new Map();
+	window.setMouseCursorVisible(false);
 
-	unsigned parameter = 0;
-	if (_level < 2) {
-		parameter = 0;
-	}
-	else if (_level < 4) {
-		parameter = 1;
-	}
-	else if (_level < 6) {
-		parameter = 2;
-	}
-	else {
-		parameter = 3;
-	}
-
-	player->newLevel(_levelParameters[parameter].x);
-
-	++_level;
-}
-
-int game_screen_training::Run(RenderWindow& window)
-{
 	if (!_isGameStart) {
 		_isGameStart = true;
 		newGame();
@@ -44,6 +47,8 @@ int game_screen_training::Run(RenderWindow& window)
 		_isNewLevel = false;
 		newLevel();
 	}
+
+	readyText(window);
 
 	Clock clock;
 
@@ -59,8 +64,11 @@ int game_screen_training::Run(RenderWindow& window)
 			if (event.type == Event::Closed) {
 				window.close();
 			}
-			if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-				return 6;
+			if (event.type == Event::KeyReleased) {
+				if (event.key.code == Keyboard::Escape) {
+					window.clear();
+					return 6;
+				}
 			}
 		}
 
@@ -69,21 +77,131 @@ int game_screen_training::Run(RenderWindow& window)
 
 		window.clear();
 
-		if ((*player).pointsEaten() >= 40) {
+		(*map).drawMap(window);
+
+		if ((*player).pointsEaten() >= 20) {
+			_arrowLeftSprite.setPosition(_leftArrowPosition);
+			window.draw(_arrowLeftSprite);
+			_arrowRightSprite.setPosition(_rightArrowPosition);
+			window.draw(_arrowRightSprite);
+			window.draw(gameScreenTraining::leftNewLevel());
+			window.draw(gameScreenTraining::rightNewLevel());
 			if (checkTeleport(*player)) {
 				_isNewLevel = true;
+				window.clear();
 				return 5;
 			}
 		}
 
-		(*map).drawMap(window);
-
 		window.draw((*player).score());
 		window.draw((*player).lifes());
 		window.draw((*player).sprite());
+		window.draw(numberOfLevels());
 
 		window.display();
 	}
 
 	return 0;
+}
+
+void gameScreenTraining::clear()
+{
+	delete map;
+	delete player;
+}
+
+void gameScreenTraining::newGame()
+{
+	_level = 1;
+
+	map = new Map();
+
+	player = new Pacman1(_parameters[1], _parameters[2], 945, 780, _levelParameters[0].x);
+}
+
+void gameScreenTraining::newLevel()
+{
+	map = new Map();
+
+	unsigned parameter = 0;
+	if (_level <= 2) {
+		parameter = 0;
+	}
+	else if (_level <= 4) {
+		parameter = 1;
+	}
+	else if (_level <= 6) {
+		parameter = 2;
+	}
+	else {
+		parameter = 3;
+	}
+
+	player->newLevel(_levelParameters[parameter].x);
+
+	++_level;
+}
+
+Text gameScreenTraining::numberOfLevels()
+{
+	std::ostringstream playerLevel;
+	playerLevel << _level;
+	_textOfLevels.setString("Level: " + playerLevel.str());
+
+	Vector2f position(850, 1025);
+	_textOfLevels.setPosition(position);
+
+	return _textOfLevels;
+}
+
+Text gameScreenTraining::leftNewLevel()
+{
+	_textOfNewLevels.setString(" New\nlevel");
+
+	Vector2f position(430, 495);
+	_textOfNewLevels.setPosition(position);
+
+	return _textOfNewLevels;
+}
+
+Text gameScreenTraining::rightNewLevel()
+{
+	_textOfNewLevels.setString(" New\nlevel");
+
+	Vector2f position(1400, 495);
+	_textOfNewLevels.setPosition(position);
+
+	return _textOfNewLevels;
+}
+
+void gameScreenTraining::readyText(RenderWindow& window)
+{
+	window.clear();
+	(*map).drawMap(window);
+	window.draw((*player).score());
+	window.draw((*player).lifes());
+	window.draw((*player).sprite());
+	window.draw(numberOfLevels());
+
+	_textOfReady.setString("READY");
+	_textOfReady.setPosition(885, 495);
+	window.draw(_textOfReady);
+	window.display();
+
+	sleep(seconds(1));
+
+	window.clear();
+	(*map).drawMap(window);
+	window.draw((*player).score());
+	window.draw((*player).lifes());
+	window.draw((*player).sprite());
+	window.draw(numberOfLevels());
+
+	_textOfGo.setString("GO");
+	Vector2f positionSecond(925, 495);
+	_textOfGo.setPosition(positionSecond);
+	window.draw(_textOfGo);
+	window.display();
+
+	sleep(seconds(1));
 }

@@ -82,10 +82,15 @@ void writeParametersInFile(std::string fileName, std::vector<std::string> parame
     }
 }
 
+void cScreen::clear()
+{}
 
 GameMode cScreen::_gameMode = GameMode::NONE;
 std::vector<std::string> cScreen::_parameters = {};
 bool cScreen::_isGameStart = false;
 bool cScreen::_isNewLevel = false;
-unsigned cScreen::_level = 0;
+unsigned cScreen::_level = 1;
 std::vector<sf::Vector2f> cScreen::_levelParameters = { {0.1, 0.095}, {0.1, 0.1}, {0.095, 0.1}, {0.095, 0.105} };
+unsigned cScreen::_firstPlayerScore = 0;
+unsigned cScreen::_secondPlayerScore = 0;
+std::string cScreen::_winner = "";

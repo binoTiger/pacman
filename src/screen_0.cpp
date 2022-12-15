@@ -1,5 +1,7 @@
 #include "screen_0.h"
 
+using namespace sf;
+
 menu_0::menu_0()
 {
     _parameters = readParametersFromFile("players.txt");
@@ -26,9 +28,9 @@ menu_0::menu_0()
     leftSideMapSprite.setTexture(leftSideMapTexture);
 }
 
-int menu_0::Run(sf::RenderWindow& window)
+int menu_0::Run(RenderWindow& window)
 {
-    sf::Mouse::setPosition(sf::Vector2i(960, 540), window);
+    Mouse::setPosition(Vector2i(960, 540), window);
 
     startGameKeySprite.setPosition(710, 600);
     settingsKeySprite.setPosition(760, 690);
@@ -43,34 +45,37 @@ int menu_0::Run(sf::RenderWindow& window)
     while (menuIsOpen)
     {
         menuNum = 0;
-        window.clear(sf::Color(0, 0, 0));
-        startGameKeySprite.setColor(sf::Color{ 0xA4FCFF });
-        exitGameKeySprite.setColor(sf::Color{ 0xA4FCFF });
-        settingsKeySprite.setColor(sf::Color{ 0xA4FCFF });
+        window.clear(Color(0, 0, 0));
+        startGameKeySprite.setColor(Color{ 0xA4FCFF });
+        exitGameKeySprite.setColor(Color{ 0xA4FCFF });
+        settingsKeySprite.setColor(Color{ 0xA4FCFF });
 
 
-        if (sf::IntRect(710, 600, 500, 100).contains(sf::Mouse::getPosition(window))) {
-            startGameKeySprite.setColor(sf::Color::White);
+        if (IntRect(710, 600, 500, 100).contains(Mouse::getPosition(window))) {
+            startGameKeySprite.setColor(Color::White);
             menuNum = 1;
         }
-        if (sf::IntRect(760, 700, 400, 100).contains(sf::Mouse::getPosition(window))) {
-            settingsKeySprite.setColor(sf::Color::White);
+        if (IntRect(760, 700, 400, 100).contains(Mouse::getPosition(window))) {
+            settingsKeySprite.setColor(Color::White);
             menuNum = 2;
         }
-        if (sf::IntRect(860, 800, 200, 100).contains(sf::Mouse::getPosition(window))) {
-            exitGameKeySprite.setColor(sf::Color::White);
+        if (IntRect(860, 800, 200, 100).contains(Mouse::getPosition(window))) {
+            exitGameKeySprite.setColor(Color::White);
             menuNum = 3;
         }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        if (Mouse::isButtonPressed(Mouse::Left))
         {
             if (menuNum == 1) {
+                window.clear();
                 return 1;
             }
             if (menuNum == 2) {
+                window.clear();
                 return 2;
             }
             if (menuNum == 3) {
+                window.clear();
                 return -1;
             }
         }

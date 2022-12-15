@@ -38,13 +38,14 @@ int menu_1::Run(sf::RenderWindow& window)
 
     while (secondPageMenuIsOpen) {
         menuNum = 0;
-        window.clear(sf::Color(0, 0, 0));
+        window.clear();
 
         singlePlayKeySprite.setColor(sf::Color{ 0xA4FCFF });
         duoPlayKeySprite.setColor(sf::Color{ 0xA4FCFF });
         trainingPlayKeySprite.setColor(sf::Color{ 0xA4FCFF });
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            window.clear();
             return 0;
         }
         if (sf::IntRect(810, 600, 300, 100).contains(sf::Mouse::getPosition(window))) {
@@ -65,12 +66,15 @@ int menu_1::Run(sf::RenderWindow& window)
             {
             case 1:
                 _gameMode = GameMode::SINGLE;
+                window.clear();
                 return 3;
             case 2:
                 _gameMode = GameMode::DUO;
+                window.clear();
                 return 4;
             case 3:
                 _gameMode = GameMode::TRAINING;
+                window.clear();
                 return 5;
             }
         }

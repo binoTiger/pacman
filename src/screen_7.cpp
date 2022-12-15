@@ -1,30 +1,42 @@
-#pragma once
+#include "screen_7.h"
 
-#include "screen_6.h"
+using namespace sf;
 
-pauseMenu::pauseMenu()
+gameOverSingle::gameOverSingle()
 {
+	_font.loadFromFile("../fonts/CrackMan.TTF");
+
+	_textOfScore = Text("", _font, 40);
+	_textOfScore.setFillColor(Color::Yellow);
+	_textOfScore.setStyle(Text::Bold);
+
+	gameOverImage.loadFromFile("../images/gameOver.png");
 	backgroundImage.loadFromFile("../images/PauseBackground.png");
-	continueGameKeyImage.loadFromFile("../images/Continue.png");
 	restartGameKeyImage.loadFromFile("../images/restart.png");
 	exitGameKeyImage.loadFromFile("../images/exit.png");
 
+	gameOverTexture.loadFromImage(gameOverImage);
 	backgroundTexture.loadFromImage(backgroundImage);
-	continueGameKeyTexture.loadFromImage(continueGameKeyImage);
 	restartGameKeyTexture.loadFromImage(restartGameKeyImage);
 	exitGameKeyTexture.loadFromImage(exitGameKeyImage);
 
+	gameOverSprite.setTexture(gameOverTexture);
 	backgroundSprite.setTexture(backgroundTexture);
-	continueGameKeySprite.setTexture(continueGameKeyTexture);
 	restartGameKeySprite.setTexture(restartGameKeyTexture);
 	exitGameKeySprite.setTexture(exitGameKeyTexture);
 }
 
-int pauseMenu::Run(sf::RenderWindow& window)
+int gameOverSingle::Run(sf::RenderWindow& window)
 {
 	window.setMouseCursorVisible(true);
 
-	continueGameKeySprite.setPosition(750, 540);
+	std::ostringstream playerScore;
+
+	playerScore << _firstPlayerScore;
+	_textOfScore.setString(_parameters[0] + " has collected " + playerScore.str() + " points ");
+	_textOfScore.setPosition(540, 400);
+
+	gameOverSprite.setPosition(660, 150);
 	restartGameKeySprite.setPosition(762, 660);
 	exitGameKeySprite.setPosition(863, 750);
 
@@ -34,59 +46,41 @@ int pauseMenu::Run(sf::RenderWindow& window)
 	while (menuIsOpen)
 	{
 		menuNum = 0;
-		window.clear(sf::Color(0, 0, 0));
 
-		continueGameKeySprite.setColor(sf::Color{ 0xA4FCFF });
 		restartGameKeySprite.setColor(sf::Color{ 0xA4FCFF });
 		exitGameKeySprite.setColor(sf::Color{ 0xA4FCFF });
 
-		if (sf::IntRect(750, 540, 420, 80).contains(sf::Mouse::getPosition(window))) {
-			continueGameKeySprite.setColor(sf::Color::White);
-			menuNum = 3;
-		}
 		if (sf::IntRect(762, 660, 400, 70).contains(sf::Mouse::getPosition(window))) {
 			restartGameKeySprite.setColor(sf::Color::White);
-			menuNum = 2;
+			menuNum = 1;
 		}
 		if (sf::IntRect(860, 750, 195, 80).contains(sf::Mouse::getPosition(window))) {
 			exitGameKeySprite.setColor(sf::Color::White);
-			menuNum = 1;
-		}
-		
-		sf::Event event;
-
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::KeyReleased) {
-				if (event.key.code == sf::Keyboard::Escape) {
-					window.clear();
-					return (int)_gameMode;
-				}
-			}
+			menuNum = 2;
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			switch (menuNum)
 			{
-			case 3:
-				window.clear();
-				return (int)_gameMode;
-			case 2:
+			case 1:
 				_isGameStart = false;
 				window.clear();
-				return (int)_gameMode;
-			case 1:
+				return 3;
+			case 2:
 				_isGameStart = false;
 				window.clear();
 				return 0;
 			}
 		}
 
+		window.clear();
 
 		window.draw(backgroundSprite);
-		window.draw(continueGameKeySprite);
+		window.draw(gameOverSprite);
 		window.draw(restartGameKeySprite);
 		window.draw(exitGameKeySprite);
+		window.draw(_textOfScore);
 
 		window.display();
 	}

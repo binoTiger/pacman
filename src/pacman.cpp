@@ -17,7 +17,6 @@ Pacman::Pacman(std::string color, std::string controlKeys, float x, float y, flo
 
     if (controlKeys == "arrows") {
         _controlKeys = { Keyboard::Right, Keyboard::Left, Keyboard::Down, Keyboard::Up };
-        std::cout << "arrow";
     }
     if (controlKeys == "wasd") {
         _controlKeys = { Keyboard::D, Keyboard::A, Keyboard::S, Keyboard::W };
@@ -105,7 +104,7 @@ void Pacman::update(float time, Map& map)
         }
     }
 
-    std::cout << _immortalTimer << _boostedTimer << "\n";
+    //std::cout << _immortalTimer << _boostedTimer << "\n";
 
     interactionWithMap(map);
     _sprite.setPosition(_x, _y);
@@ -134,6 +133,7 @@ void Pacman::newLevel(float speed)
     _immortalTimer = 0;
     _isBoosted = false;
     _boostedTimer = 0;
+    _sprite.setPosition(_x, _y);
 }
 
 unsigned Pacman::pointsEaten()
@@ -169,6 +169,11 @@ void Pacman::increaseScoreIfEatGhost()
 const Direction Pacman::getDirection() const
 {
     return _direction;
+}
+
+unsigned Pacman::points() const
+{
+    return _score;
 }
 
 bool Pacman::CanGoRight(const Map& map)
@@ -229,7 +234,7 @@ void Pacman::animate(float time)
         _sprite.setTextureRect(IntRect(29, 30 * int(_currentFrame), -29, 30));
         break;
     case Direction::DOWN:
-        _sprite.setTextureRect(IntRect(30, 29 + 30 * int(_currentFrame), 30, -29));
+        _sprite.setTextureRect(IntRect(30, 30 + 30 * int(_currentFrame), 30, -30));
         break;
     case Direction::UP:
         _sprite.setTextureRect(IntRect(30, 30 * int(_currentFrame), 30, 30));

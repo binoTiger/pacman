@@ -8,6 +8,7 @@
 const int DeleteKey = 8;
 const int EnterKey = 13;
 const int EscapeKey = 27;
+const int WhitespaceKey = 32;
 const std::string FontPath = "../fonts/arialmt.ttf";
 
 class TextBox {
@@ -89,7 +90,7 @@ public:
 private:
 	void inputLogic(int typedChar)
 	{
-		if (typedChar != DeleteKey && typedChar != EnterKey && typedChar != EscapeKey) {
+		if (typedChar != DeleteKey && typedChar != EnterKey && typedChar != EscapeKey && typedChar != WhitespaceKey) {
 			_text << static_cast<char>(typedChar);
 		}
 		else if (typedChar == DeleteKey) {

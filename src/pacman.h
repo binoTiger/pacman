@@ -17,6 +17,7 @@ public:
     const bool isBoosted() const;
     void increaseScoreIfEatGhost();
     const Direction getDirection() const;
+    unsigned points() const;
 
     virtual sf::Text score() = 0;
     virtual sf::Sprite lifes() = 0;

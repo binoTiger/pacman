@@ -14,6 +14,8 @@ Player::Player(String file, float x, float y, float speed)
 
     _sprite.setTexture(_texture);
     _sprite.setTextureRect(IntRect(0, 0, 30, 30));
+
+    _sprite.setPosition(_x, _y);
 }
 
 Sprite Player::sprite()

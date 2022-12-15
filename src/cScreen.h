@@ -37,13 +37,18 @@ class cScreen
 {
 public:
 	virtual int Run(sf::RenderWindow& App) = 0;
+	static bool _isGameStart;
+	void clear();
 
 protected:
 	static GameMode _gameMode;
 	static std::vector<std::string> _parameters;
-	static bool _isGameStart;
 	static bool _isNewLevel;
 
 	static unsigned _level;
 	static std::vector<sf::Vector2f> _levelParameters;
+
+	static unsigned _firstPlayerScore;
+	static unsigned _secondPlayerScore;
+	static std::string _winner;
 };
