@@ -137,6 +137,8 @@ int menu_2::Run(sf::RenderWindow& window)
     textbox2.setLimit(true, 15);
 
     while (menuIsOpen) {
+        window.clear();
+
         settingNum = 0;
 
         sf::Event event;
@@ -224,8 +226,14 @@ int menu_2::Run(sf::RenderWindow& window)
 
         while (window.pollEvent(event))
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                 menuIsOpen = false;
+            }*/
+            if (event.type == sf::Event::KeyReleased) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    window.clear();
+                    menuIsOpen = false;
+                }
             }
             if (event.type == sf::Event::TextEntered) {
                 textbox1.typedOn(event);
@@ -331,7 +339,7 @@ int menu_2::Run(sf::RenderWindow& window)
             break;
         }
 
-        window.clear(sf::Color(0, 0, 0));
+        window.clear();
 
         sf::Vertex verticalLine[] = { sf::Vertex(sf::Vector2f(957, 0)), sf::Vertex(sf::Vector2f(957, 1080)) };
         sf::Vertex underPlayersLine[] = { sf::Vertex(sf::Vector2f(0, 200)), sf::Vertex(sf::Vector2f(1920, 200)) };
@@ -384,5 +392,6 @@ int menu_2::Run(sf::RenderWindow& window)
 
     writeParametersInFile("players.txt", _parameters);
 
+    window.clear();
     return 0;
 }
