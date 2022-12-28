@@ -49,7 +49,7 @@ int gameScreenSingle::Run(RenderWindow& window)
 		newLevel();
 	}
 
-	readyText(window);
+	//readyText(window);
 
 	Clock clock;
 
@@ -145,6 +145,7 @@ void gameScreenSingle::clear()
 
 void gameScreenSingle::newGame()
 {
+	//clear();
 	_level = 1;
 	_firstPlayerScore = 0;
 
@@ -202,7 +203,7 @@ Text gameScreenSingle::numberOfLevels()
 
 Text gameScreenSingle::leftNewLevel()
 {
-	_textOfNewLevels.setString(" New\nlevel");
+	_textOfNewLevels.setString(" Next\nlevel");
 
 	Vector2f position(430, 495);
 	_textOfNewLevels.setPosition(position);
@@ -212,7 +213,7 @@ Text gameScreenSingle::leftNewLevel()
 
 Text gameScreenSingle::rightNewLevel()
 {
-	_textOfNewLevels.setString(" New\nlevel");
+	_textOfNewLevels.setString("Next\nlevel");
 
 	Vector2f position(1400, 495);
 	_textOfNewLevels.setPosition(position);

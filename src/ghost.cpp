@@ -1,4 +1,4 @@
-#include "ghost.h"
+#include "../include/ghost.h"
 
 using namespace sf;
 

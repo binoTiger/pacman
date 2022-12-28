@@ -1,1 +1,1 @@
-player yellow wasd player2 blue arrows  
+pacman grey wasd ghost green arrows  

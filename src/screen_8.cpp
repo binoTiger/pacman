@@ -14,7 +14,7 @@ gameOverDuo::gameOverDuo()
 	_textOfScore2.setFillColor(Color::Yellow);
 	_textOfScore2.setStyle(Text::Bold);
 
-	_winnerPlayer = Text("", _font, 40);
+	_winnerPlayer = Text("", _font, 48);
 	_winnerPlayer.setFillColor(Color::Yellow);
 	_winnerPlayer.setStyle(Text::Bold);
 
@@ -38,18 +38,17 @@ int gameOverDuo::Run(sf::RenderWindow& window)
 {
 	window.setMouseCursorVisible(true);
 
-	std::ostringstream playerScore;
-
 	_winnerPlayer.setString(_winner + " won!");
-	_winnerPlayer.setPosition(750, 550);
+	_winnerPlayer.setPosition(540, 550);
 
-	playerScore << _firstPlayerScore;
-	_textOfScore1.setString(_parameters[0] + " has collected " + playerScore.str() + " points ");
+	std::ostringstream playerScore1;
+	playerScore1 << _firstPlayerScore;
+	_textOfScore1.setString(_parameters[0] + " has collected " + playerScore1.str() + " points ");
 	_textOfScore1.setPosition(540, 400);
 
-	playerScore.clear();
-	playerScore << _secondPlayerScore;
-	_textOfScore2.setString(_parameters[3] + " has collected " + playerScore.str() + " points ");
+	std::ostringstream playerScore2;
+	playerScore2 << _secondPlayerScore;
+	_textOfScore2.setString(_parameters[3] + " has collected " + playerScore2.str() + " points ");
 	_textOfScore2.setPosition(540, 460);
 
 	gameOverSprite.setPosition(660, 150);

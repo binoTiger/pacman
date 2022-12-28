@@ -48,7 +48,7 @@ int gameScreenDuo::Run(RenderWindow& window)
 		newLevel();
 	}
 
-	readyText(window);
+	//readyText(window);
 
 	Clock clock;
 
@@ -104,7 +104,7 @@ int gameScreenDuo::Run(RenderWindow& window)
 
 		window.clear();
 
-		if ((*player1).getLifes() == 0) {
+		/*if ((*player1).getLifes() == 0) {
 			_firstPlayerScore = (*player1).points();
 			_secondPlayerScore = (*player2).points();
 			_winner = _parameters[3];
@@ -116,6 +116,20 @@ int gameScreenDuo::Run(RenderWindow& window)
 			_firstPlayerScore = (*player1).points();
 			_secondPlayerScore = (*player2).points();
 			_winner = _parameters[0];
+			window.clear();
+			return 8;
+		}*/
+
+		if ((*player1).getLifes() * (*player2).getLifes() == 0) {
+			_firstPlayerScore = (*player1).points();
+			_secondPlayerScore = (*player2).points();
+
+			if ((*player1).getLifes() == 0) {
+				_winner = _parameters[3];
+			}
+			else {
+				_winner = _parameters[0];
+			}
 			window.clear();
 			return 8;
 		}
@@ -167,6 +181,7 @@ void gameScreenDuo::clear()
 
 void gameScreenDuo::newGame()
 {
+	//clear();
 	_level = 1;
 	_firstPlayerScore = 0;
 	_secondPlayerScore = 0;
@@ -228,7 +243,7 @@ Text gameScreenDuo::numberOfLevels()
 
 Text gameScreenDuo::leftNewLevel()
 {
-	_textOfNewLevels.setString(" New\nlevel");
+	_textOfNewLevels.setString(" Next\nlevel");
 
 	Vector2f position(430, 495);
 	_textOfNewLevels.setPosition(position);
@@ -238,7 +253,7 @@ Text gameScreenDuo::leftNewLevel()
 
 Text gameScreenDuo::rightNewLevel()
 {
-	_textOfNewLevels.setString(" New\nlevel");
+	_textOfNewLevels.setString("Next\nlevel");
 
 	Vector2f position(1400, 495);
 	_textOfNewLevels.setPosition(position);

@@ -1,4 +1,4 @@
-#include "gameInteraction.h"
+#include "../include/gameInteraction.h"
 
 void ghostAndPacmanInteraction(Pacman& pacman, Ghost& ghost)
 {

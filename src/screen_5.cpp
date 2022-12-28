@@ -48,7 +48,7 @@ int gameScreenTraining::Run(RenderWindow& window)
 		newLevel();
 	}
 
-	readyText(window);
+	//readyText(window);
 
 	Clock clock;
 
@@ -112,6 +112,7 @@ void gameScreenTraining::clear()
 
 void gameScreenTraining::newGame()
 {
+	//clear();
 	_level = 1;
 
 	map = new Map();
@@ -156,7 +157,7 @@ Text gameScreenTraining::numberOfLevels()
 
 Text gameScreenTraining::leftNewLevel()
 {
-	_textOfNewLevels.setString(" New\nlevel");
+	_textOfNewLevels.setString(" Next\nlevel");
 
 	Vector2f position(430, 495);
 	_textOfNewLevels.setPosition(position);
@@ -166,7 +167,7 @@ Text gameScreenTraining::leftNewLevel()
 
 Text gameScreenTraining::rightNewLevel()
 {
-	_textOfNewLevels.setString(" New\nlevel");
+	_textOfNewLevels.setString("Next\nlevel");
 
 	Vector2f position(1400, 495);
 	_textOfNewLevels.setPosition(position);

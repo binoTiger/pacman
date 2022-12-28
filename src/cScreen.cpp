@@ -1,4 +1,4 @@
-#include "cScreen.h"
+#include "../include/cScreen.h"
 
 std::vector<std::string> readParametersFromFile(std::string fileName)
 {
@@ -7,7 +7,7 @@ std::vector<std::string> readParametersFromFile(std::string fileName)
     std::vector<std::string> parameters;
 
     if (file.peek() == EOF) {
-        return std::vector<std::string>{ "player", "yellow", "arrows", "player2", "grey", "wasd" };
+        return std::vector<std::string>{ "player1", "yellow", "arrows", "player2", "grey", "wasd" };
     }
     else {
         while (!file.eof())
@@ -82,12 +82,8 @@ void writeParametersInFile(std::string fileName, std::vector<std::string> parame
     }
 }
 
-void cScreen::clear()
-{}
-
 GameMode cScreen::_gameMode = GameMode::NONE;
 std::vector<std::string> cScreen::_parameters = {};
-bool cScreen::_needToClean = false;
 bool cScreen::_isGameStart = false;
 bool cScreen::_isNewLevel = false;
 unsigned cScreen::_level = 1;

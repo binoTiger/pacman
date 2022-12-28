@@ -226,8 +226,14 @@ int menu_2::Run(sf::RenderWindow& window)
 
         while (window.pollEvent(event))
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                 menuIsOpen = false;
+            }*/
+            if (event.type == sf::Event::KeyReleased) {
+                if (event.key.code == sf::Keyboard::Escape) {
+                    window.clear();
+                    menuIsOpen = false;
+                }
             }
             if (event.type == sf::Event::TextEntered) {
                 textbox1.typedOn(event);

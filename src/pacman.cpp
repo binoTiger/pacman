@@ -1,9 +1,9 @@
-#include "pacman.h"
+#include "../include/pacman.h"
 
 using namespace sf;
 
 Pacman::Pacman(std::string color, std::string controlKeys, float x, float y, float speed)
-    : Player(color + "Pacman.png", x, y, speed), _score(0), _lives(3), _isImmortal(false), _immortalTimer(0), _isBoosted(false), _boostedTimer(0)
+    : Player(color + "Pacman.png", x, y, speed), _score(0), _pointsEaten(0), _lives(3), _isImmortal(false), _immortalTimer(0), _isBoosted(false), _boostedTimer(0)
 {
     _font.loadFromFile("../fonts/CrackMan.TTF");
     _text = Text("", _font, 40);
@@ -104,8 +104,6 @@ void Pacman::update(float time, Map& map)
         }
     }
 
-    //std::cout << _immortalTimer << _boostedTimer << "\n";
-
     interactionWithMap(map);
     _sprite.setPosition(_x, _y);
     animate(time);
@@ -136,7 +134,7 @@ void Pacman::newLevel(float speed)
     _sprite.setPosition(_x, _y);
 }
 
-unsigned Pacman::pointsEaten()
+unsigned Pacman::pointsEaten() const
 {
     return _pointsEaten;
 }
